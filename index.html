@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yeshua Royal Catering Services — Flavours That Reigns</title>
+  <meta name="description" content="Yeshua Royal Catering Services — elegant catering for weddings, private events, celebrations and corporate occasions. Flavours that reigns." />
+
+  <!-- Fonts (degrade gracefully to system serif/sans if offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="assets/logo/logo.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#about">Skip to content</a>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ============================ HEADER / NAV ============================ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#hero" aria-label="Yeshua Royal Catering Services home">
+        <img src="assets/logo/logo.png" alt="Yeshua Royal Catering Services logo" class="brand-logo" onerror="this.onerror=null;this.src='assets/logo/logo.svg'" />
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&times;</button>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#menu">Menus</a>
+        <a href="#events">Events</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-cta">
+        <a class="btn btn-ghost btn-sm" data-href-tel aria-label="Call us">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+          <span data-text="contact.phoneDisplay">Call Us</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+  </header>
+
+  <!-- ================================ HERO ================================ -->
+  <!-- 3D LANDING: layered, perspective-based parallax scene controlled by scroll -->
+  <section class="hero" id="hero">
+    <div class="hero-stage" id="heroStage">
+      <!-- depth layers (furthest → nearest) -->
+      <div class="hero-glow" data-depth="6" aria-hidden="true"></div>
+
+      <figure class="media hero-plate hero-plate--left" data-depth="26" data-label="Fresh seasonal dish"><img src="assets/images/hero-2.jpg" alt="Fresh seasonal dishes served on oval platters" /></figure>
+
+      <figure class="media hero-plate hero-plate--right" data-depth="30" data-label="Dessert selection"><img src="assets/images/hero-3.jpg" alt="Two-tier purple and gold celebration cake" /></figure>
+
+      <!-- floating ingredient chips -->
+      <div class="chip chip--1" data-depth="40" aria-hidden="true">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M12 3c4 3 6 6 6 9a6 6 0 1 1-12 0c0-3 2-6 6-9z"/></svg> Seasonal produce
+      </div>
+      <div class="chip chip--2" data-depth="52" aria-hidden="true">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 19h16M6 19V9m6 10V6m6 13v-7"/></svg> Artisan plating
+      </div>
+      <div class="chip chip--3" data-depth="46" aria-hidden="true">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z"/></svg> Made fresh
+      </div>
+
+      <!-- hero copy -->
+      <div class="hero-content" data-depth="8">
+        <p class="eyebrow" data-text="hero.eyebrow">Private Events · Weddings · Corporate</p>
+        <h1 class="hero-title" data-text="hero.headline">Elegant Catering for Unforgettable Moments</h1>
+        <p class="hero-sub" data-text="hero.sub">Beautifully presented food, crafted for private events, weddings, celebrations, and corporate occasions.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#services">Explore Our Catering</a>
+          <a class="btn btn-outline" data-href-tel>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+            Call Us
+          </a>
+          <a class="btn btn-outline" data-href-ig>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            View Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-cue-line"><i></i></div>
+    </div>
+  </section>
+
+  <!-- =============================== ABOUT =============================== -->
+  <section class="section about" id="about">
+    <div class="container about-grid">
+      <div class="about-visual reveal">
+        <figure class="media about-media" data-label="Our kitchen"><img src="assets/images/about-1.jpg" alt="Chefs preparing a plated dish in the kitchen" /></figure>
+        <figure class="media about-media about-media--sm reveal" data-parallax="0.12" data-label="Plating detail"><img src="assets/images/about-2.jpg" alt="Close-up of an elegantly plated dish" /></figure>
+      </div>
+      <div class="about-copy">
+        <p class="eyebrow reveal" data-text="about.eyebrow">Our Story</p>
+        <h2 class="section-title reveal" data-text="about.heading">Beautiful food, thoughtfully presented</h2>
+        <div id="aboutBody"></div>
+        <ul class="stats" id="aboutStats"></ul>
+        <div class="reveal">
+          <a class="btn btn-dark" href="#menu">Explore Menus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SERVICES ============================== -->
+  <section class="section services" id="services">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow reveal">What We Offer</p>
+        <h2 class="section-title reveal">Crafted catering for every occasion</h2>
+        <p class="section-lead reveal">From intimate gatherings to grand celebrations, each service is designed around your event and delivered with quiet precision.</p>
+      </header>
+      <div class="services-grid" id="servicesGrid"></div>
+    </div>
+  </section>
+
+  <!-- =========================== MENU SHOWCASE =========================== -->
+  <section class="section menu" id="menu">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow reveal">The Food</p>
+        <h2 class="section-title reveal">A taste of what we create</h2>
+        <p class="section-lead reveal">Menus are seasonal and made to measure. Explore a selection of the categories we cater — then see it all come to life on Instagram.</p>
+      </header>
+      <div class="menu-grid" id="menuGrid"></div>
+      <div class="menu-cta reveal">
+        <a class="btn btn-gold" data-href-ig>See Our Food on Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== 3D FEATURE ============================== -->
+  <!-- Scroll-scrubbed depth scene: floating cards + rotating plate move through depth -->
+  <section class="feature3d" id="feature3d" aria-label="Presentation in motion">
+    <div class="feature3d-sticky" id="feature3dSticky">
+      <div class="feature3d-scene" id="feature3dScene">
+        <div class="plate-rotor" id="plateRotor" aria-hidden="true">
+          <figure class="media plate-media" data-label="Signature plate"><img src="assets/images/feature-plate.jpg" alt="" /></figure>
+          <span class="plate-ring"></span>
+          <span class="plate-ring plate-ring--2"></span>
+        </div>
+
+        <figure class="media float-card float-card--1" data-fdepth="1.4" data-label="Canapés"><img src="assets/images/feature-1.jpg" alt="" /></figure>
+        <figure class="media float-card float-card--2" data-fdepth="2.2" data-label="Platter"><img src="assets/images/feature-2.jpg" alt="" /></figure>
+        <figure class="media float-card float-card--3" data-fdepth="1.8" data-label="Dessert"><img src="assets/images/feature-3.jpg" alt="" /></figure>
+        <figure class="media float-card float-card--4" data-fdepth="2.6" data-label="Garnish"><img src="assets/images/feature-4.jpg" alt="" /></figure>
+
+        <div class="feature3d-copy" id="feature3dCopy">
+          <p class="eyebrow">Presentation in Motion</p>
+          <h2 class="section-title">Every detail, considered</h2>
+          <p class="section-lead">Layer by layer, plate by plate — a catering experience designed to feel as good as it looks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================== EVENTS =============================== -->
+  <section class="section events" id="events">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow reveal">Occasions</p>
+        <h2 class="section-title reveal">From intimate gatherings to grand celebrations</h2>
+        <p class="section-lead reveal">Whatever you are marking, we bring the food, the finish and the calm that lets you enjoy the day.</p>
+      </header>
+      <div class="events-grid" id="eventsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================== GALLERY ============================== -->
+  <section class="section gallery" id="gallery">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow reveal">Gallery</p>
+        <h2 class="section-title reveal">Recent work</h2>
+        <p class="section-lead reveal">A closer look at the food, styling and events we love to create.</p>
+      </header>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================ TESTIMONIALS =========================== -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow reveal">Kind Words</p>
+        <h2 class="section-title reveal">Trusted for the moments that matter</h2>
+      </header>
+      <div class="testimonials-grid" id="testimonialsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================= INSTAGRAM ============================= -->
+  <section class="section insta" id="instagram">
+    <div class="container">
+      <div class="insta-head">
+        <p class="eyebrow reveal">Follow Along</p>
+        <h2 class="section-title section-title--light reveal" data-text="instagram.heading">See Our Latest Creations on Instagram</h2>
+        <p class="section-lead section-lead--light reveal" data-text="instagram.body">See more of our food presentation, events, and catering work on Instagram.</p>
+        <p class="insta-handle reveal" data-text="contact.instagramHandle">@your.catering</p>
+        <div class="reveal"><a class="btn btn-gold" data-href-ig>View Instagram</a></div>
+      </div>
+      <div class="insta-grid" id="instaGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================== CONTACT ============================== -->
+  <section class="section contact" id="contact">
+    <div class="container contact-inner">
+      <div class="contact-copy">
+        <p class="eyebrow reveal">Get in Touch</p>
+        <h2 class="section-title reveal">Let's talk about your occasion</h2>
+        <p class="section-lead reveal">For catering enquiries, please contact us directly by phone or visit our Instagram page to see more of our latest food presentation and event work.</p>
+        <div class="contact-actions reveal">
+          <a class="btn btn-gold btn-lg" data-href-tel>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+            Call Us
+          </a>
+          <a class="btn btn-dark btn-lg" data-href-ig>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            View Instagram
+          </a>
+        </div>
+      </div>
+      <ul class="contact-cards" id="contactCards">
+        <!-- phone cards (one per number) are rendered here by main.js -->
+        <li class="contact-card reveal">
+          <span class="contact-card-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+          <div><p class="contact-card-label">Instagram</p><a class="contact-card-value" data-href-ig data-text="contact.instagramHandle">@your.catering</a></div>
+        </li>
+        <li class="contact-card reveal">
+          <span class="contact-card-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <div><p class="contact-card-label">Where we work</p><span class="contact-card-value" data-text="contact.serviceArea">Available for events across Romania</span></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- =============================== FOOTER =============================== -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/logo/logo.png" alt="Yeshua Royal Catering Services logo" class="footer-logo" onerror="this.onerror=null;this.src='assets/logo/logo.svg'" />
+        <p class="footer-desc">Yeshua Royal Catering Services — elegant catering for weddings, private events, celebrations and corporate occasions. Flavours that reigns.</p>
+        <a class="btn btn-outline btn-sm" data-href-ig>
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          Follow Us on Instagram
+        </a>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer">
+        <p class="footer-heading">Explore</p>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#menu">Menus</a>
+        <a href="#events">Events</a>
+        <a href="#gallery">Gallery</a>
+      </nav>
+
+      <div class="footer-contact">
+        <p class="footer-heading">Contact</p>
+        <span id="footerPhones"><!-- phone lines rendered by main.js --></span>
+        <a class="footer-line" data-href-ig data-text="contact.instagramHandle">@your.catering</a>
+        <span class="footer-line" data-text="contact.location">Bucharest, Romania</span>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; <span id="year">2026</span> <span data-text="brand.name">SAVORÉ</span>. All rights reserved.</span>
+      <span class="footer-note">Display website · Contact by phone or Instagram</span>
+    </div>
+  </footer>
+
+  <!-- ============================== LIGHTBOX ============================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
+    <figure class="lightbox-figure media" id="lightboxFigure" data-label="Photo"><img src="" alt="" id="lightboxImg" /></figure>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- On-brand vector stand-in for Yeshua Royal Catering Services.
+     To use your EXACT logo, save the supplied artwork as assets/logo/logo.png
+     (the site auto-swaps to it). This self-contained badge is shown until then. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Yeshua Royal Catering Services — Flavours That Reigns">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4D67A"/>
+      <stop offset="0.5" stop-color="#E4B84E"/>
+      <stop offset="1" stop-color="#C2942F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- disc + rings -->
+  <circle cx="120" cy="120" r="116" fill="#2E1A47"/>
+  <circle cx="120" cy="120" r="116" fill="none" stroke="url(#gold)" stroke-width="5"/>
+  <circle cx="120" cy="120" r="79" fill="none" stroke="url(#gold)" stroke-width="1.4" stroke-opacity="0.55"/>
+
+  <!-- curved brand text -->
+  <path id="arcTop" d="M 26,85.8 A 100,100 0 0 1 214,85.8" fill="none"/>
+  <path id="arcBot" d="M 43.4,184.3 A 100,100 0 0 0 196.6,184.3" fill="none"/>
+  <g fill="url(#gold)" font-family="Georgia, 'Times New Roman', serif" font-weight="700">
+    <text font-size="12" letter-spacing="0.5">
+      <textPath href="#arcTop" startOffset="50%" text-anchor="middle">YESHUA ROYAL CATERING SERVICES</textPath>
+    </text>
+    <text font-size="14" letter-spacing="1.4">
+      <textPath href="#arcBot" startOffset="50%" text-anchor="middle">FLAVOURS THAT REIGNS</textPath>
+    </text>
+  </g>
+
+  <!-- side dots -->
+  <circle cx="20" cy="120" r="3" fill="url(#gold)"/>
+  <circle cx="220" cy="120" r="3" fill="url(#gold)"/>
+
+  <!-- crown -->
+  <g transform="translate(120,92)" fill="url(#gold)">
+    <path d="M -24,8 L -17,-15 L -8,-1 L 0,-19 L 8,-1 L 17,-15 L 24,8 Z"/>
+    <rect x="-24" y="8" width="48" height="7" rx="1.5"/>
+    <circle cx="-17" cy="-17" r="2.6"/><circle cx="0" cy="-21" r="2.6"/><circle cx="17" cy="-17" r="2.6"/>
+  </g>
+
+  <!-- serving platter -->
+  <g transform="translate(120,138)">
+    <ellipse cx="0" cy="0" rx="54" ry="14" fill="url(#gold)"/>
+    <ellipse cx="0" cy="-1.5" rx="40" ry="8.5" fill="#2E1A47" fill-opacity="0.28"/>
+    <ellipse cx="0" cy="-1.5" rx="40" ry="8.5" fill="none" stroke="#8a6a1e" stroke-width="0.8" stroke-opacity="0.5"/>
+  </g>
+</svg>
