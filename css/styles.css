@@ -287,6 +287,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
               0 0 42px rgba(217,185,120,.28);
 }
 .hero-plate:hover img { transform: scale(1.07); }
+/* seamless variant: transparent-background photo floats directly on the hero
+   gradient — no card box, no clipping; depth comes from a shape-following
+   drop shadow instead of a rectangular box-shadow */
+.hero-plate--seamless,
+.hero-plate--seamless:hover { background: none; box-shadow: none; border-radius: 0; }
+.hero-plate--seamless img {
+  object-fit: contain;
+  filter: drop-shadow(0 26px 38px rgba(0,0,0,.5));
+  transition: transform .45s var(--ease), filter .45s var(--ease);
+}
+.hero-plate--seamless:hover img {
+  transform: scale(1.07);
+  filter: drop-shadow(0 32px 46px rgba(0,0,0,.6)) drop-shadow(0 0 26px rgba(217,185,120,.35));
+}
 .hero-plate--left  { width: 240px; height: 300px; top: 30%; left: -2%; transform: rotate(-6deg); }
 .hero-plate--right { width: 250px; height: 310px; top: 26%; right: -2%; transform: rotate(6deg); }
 
