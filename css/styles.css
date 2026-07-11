@@ -192,7 +192,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .site-header.scrolled { box-shadow: 0 8px 26px rgba(46,26,71,.10); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem 0; }
+.brand { display: inline-flex; align-items: center; gap: .7rem; }
 .brand-logo { height: 46px; width: auto; color: var(--ink); transition: color .4s; }
+/* business name beside the logo — same royal purple as the hero background */
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.28rem;
+  letter-spacing: .04em;
+  color: #2E1A47;
+  white-space: nowrap;
+}
 .hero-active .brand-logo { color: #F6EFE2; }
 
 .nav { display: flex; gap: 2rem; }
@@ -638,6 +648,7 @@ a.contact-card-value:hover { color: var(--gold); }
   .nav a { color: #F6EFE2 !important; font-family: var(--serif); font-size: 1.6rem; }
   .nav-close { display: flex; }
   .nav-backdrop { display: block; }
+  .brand-name { font-size: 1.05rem; letter-spacing: .02em; }
   .about-grid { grid-template-columns: 1fr; }
   .about-media--sm { width: 40%; right: 0; bottom: -8%; }
   .contact-inner { grid-template-columns: 1fr; }
