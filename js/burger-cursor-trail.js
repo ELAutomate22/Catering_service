@@ -28,15 +28,15 @@
   var CONFIG = {
     color: "#2E1A47",        // burger line colour (brand royal purple)
     haloColor: "rgba(255,255,255,.85)", // halo under the lines for visibility
-    sizeMin: 22,             // px — smallest burger
-    sizeMax: 32,             // px — largest burger
+    sizeMin: 16,             // px — smallest burger (~0.5cm nominal: 19px ±15%)
+    sizeMax: 22,             // px — largest burger
     lifeMin: 900,            // ms — shortest particle life
     lifeMax: 1300,           // ms — longest particle life
     spawnDistance: 24,       // px of pointer travel between spawns
     scatterRadius: 40,       // px — ~1cm jitter radius around the cursor path
     maxOpacity: 0.42,        // peak particle opacity
     rotationRange: 28,       // deg — random rotation is ±this
-    scaleWobble: 0.12,       // extra random scale variation (fraction)
+    scaleWobble: 0.05,       // extra random scale variation (kept subtle — most burgers ≈19px)
     maxParticles: 90,        // hard cap on live particles
     zIndex: 90,              // above content, below the header (header is 100)
     // Anything matching this (or inside it) never gets the effect.
@@ -116,9 +116,10 @@
     ctx.strokeStyle = CONFIG.haloColor;
     ctx.lineWidth = 6;
     drawBurgerPath(ctx);
-    // ink pass
+    // ink pass (slightly bolder in sprite units so ~19px burgers stay legible
+    // without looking thick — at 19px this renders ≈0.9px lines)
     ctx.strokeStyle = CONFIG.color;
-    ctx.lineWidth = 2.6;
+    ctx.lineWidth = 3;
     drawBurgerPath(ctx);
     return c;
   }
