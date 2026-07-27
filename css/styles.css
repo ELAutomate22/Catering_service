@@ -424,7 +424,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* =============================================================================
    MENU SHOWCASE
    ========================================================================== */
-.menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+/* 4 categories → one balanced row on wide screens (matches the services grid) */
+.menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; }
 .menu-card {
   position: relative; border-radius: var(--radius); overflow: hidden;
   aspect-ratio: 4/5; box-shadow: var(--shadow-sm);

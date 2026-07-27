@@ -71,10 +71,8 @@ window.SITE_CONFIG = {
   menu: [
     // "images" (plural) stacks two photos inside one card, each with its own hover zoom
     { images: ["menu-starters-1.jpg", "menu-starters-2.jpg"], title: "Starters", desc: "Elegant canapés and refined first courses.", items: ["Canapés", "Bruschetta", "Seasonal soups"] },
-    { image: "menu-mains.jpg",     title: "Main Dishes",  desc: "Considered mains built on seasonal produce.", items: ["Slow-roasted meats", "Fresh fish", "Vegetarian"] },
+    { images: ["menu-mains-1.jpg", "menu-mains-2.jpg"], title: "Main Dishes", desc: "Considered mains built on seasonal produce.", items: ["Slow-roasted meats", "Fresh fish", "Vegetarian"] },
     { image: "menu-platters.jpg",  title: "Platters",     desc: "Sharing boards styled as centrepieces.",       items: ["Charcuterie", "Cheese", "Mezze"] },
-    { image: "menu-desserts.jpg",  title: "Desserts",     desc: "Patisserie and showpiece sweet tables.",       items: ["Pastries", "Tarts", "Petits fours"] },
-    { image: "menu-drinks.jpg",    title: "Drinks",       desc: "Signature refreshments and welcome drinks.",    items: ["Welcome drinks", "Mocktails", "Coffee"] },
     { image: "menu-buffets.jpg",   title: "Event Buffets", desc: "Generous buffets for larger celebrations.",    items: ["Hot & cold", "Grazing", "Live stations"] },
   ],
 
