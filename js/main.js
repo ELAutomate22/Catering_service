@@ -99,8 +99,18 @@
     var grid = $("#menuGrid"); if (!grid || !CFG.menu) return;
     CFG.menu.forEach(function (m, i) {
       var tags = (m.items || []).map(function (t) { return "<span>" + t + "</span>"; }).join("");
+      // a category may supply one "image" or an "images" array (stacked halves,
+      // each zooming independently on hover)
+      var visual;
+      if (m.images && m.images.length) {
+        visual = '<div class="menu-split">' + m.images.map(function (src, n) {
+          return '<div class="menu-split-item">' + figure(src, m.title + " " + (n + 1)) + "</div>";
+        }).join("") + "</div>";
+      } else {
+        visual = figure(m.image, m.title);
+      }
       var card = el("article", "menu-card reveal",
-        figure(m.image, m.title) +
+        visual +
         '<div class="menu-card-body"><h3>' + m.title + '</h3><p>' + m.desc + '</p>' +
         '<div class="menu-tags">' + tags + '</div></div>');
       card.style.transitionDelay = (i % 3) * 0.07 + "s";

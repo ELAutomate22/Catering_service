@@ -432,9 +432,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .menu-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
 .menu-card .media { position: absolute; inset: 0; border-radius: 0; }
-.menu-card:hover .media img { transform: scale(1.08); }
+/* direct-child only: split cards zoom per half instead (see .menu-split below) */
+.menu-card:hover > .media img { transform: scale(1.08); }
+
+/* two photos stacked inside one card, each with its own hover zoom */
+.menu-split { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr 1fr; }
+.menu-split-item { position: relative; overflow: hidden; }
+.menu-split-item + .menu-split-item { box-shadow: 0 -1px 0 rgba(255,255,255,.22); }
+.menu-split-item .media { position: absolute; inset: 0; border-radius: 0; }
+.menu-split-item:hover .media img { transform: scale(1.09); }
+
 .menu-card-body {
   position: absolute; inset: 0; z-index: 2;
+  pointer-events: none; /* let hover reach the image halves underneath */
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 1.6rem;
   color: #fff;
