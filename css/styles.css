@@ -592,6 +592,117 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-2), var(--gold)); display: grid; place-items: center; color: #2a2114; font-family: var(--serif); font-weight: 600; font-size: 1.2rem; }
 .testimonial-name { font-weight: 500; color: var(--ink); font-size: .96rem; }
 .testimonial-role { font-size: .82rem; color: var(--muted); }
+.testimonial-date { font-size: .78rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
+.testimonial .star-row { margin-bottom: .9rem; }
+
+/* =============================================================================
+   REVIEWS — average rating, star rendering, submission modal
+   ========================================================================== */
+/* star row: outline layer with a gold layer clipped to --pct (supports halves) */
+.star-row { position: relative; display: inline-block; line-height: 0; }
+.star-row-base, .star-row-fill { display: flex; gap: .12em; }
+.star-row-fill {
+  position: absolute; inset: 0 auto 0 0;
+  width: var(--pct, 0%); overflow: hidden; white-space: nowrap;
+}
+.star-row svg { width: 1em; height: 1em; flex: 0 0 auto; }
+.star-row-base svg { fill: none; stroke: var(--gold); stroke-width: 1.4; opacity: .45; }
+.star-row-fill svg { fill: var(--gold); stroke: var(--gold); stroke-width: 1.2; }
+.star-row { font-size: 1.15rem; }
+
+.rating-summary {
+  display: inline-flex; align-items: center; gap: 1.1rem;
+  margin: 1.8rem 0 1.6rem;
+  padding: 1rem 1.7rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  box-shadow: var(--shadow-sm);
+}
+.rating-average {
+  font-family: var(--serif); font-size: 2.6rem; font-weight: 600;
+  color: var(--gold); line-height: 1;
+}
+.rating-of { text-align: left; }
+.rating-count { font-size: .82rem; color: var(--muted); margin-top: .25rem; }
+.reviews-empty { text-align: center; color: var(--muted); font-family: var(--serif); font-style: italic; font-size: 1.15rem; }
+
+/* ---- modal ---- */
+.review-modal {
+  position: fixed; inset: 0; z-index: 320;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.2rem;
+  background: rgba(20,12,36,.72); backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity .3s var(--ease);
+  overflow-y: auto;
+}
+.review-modal.open { opacity: 1; }
+.review-modal[hidden] { display: none; }
+.review-modal-panel {
+  position: relative;
+  width: min(520px, 100%);
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.6rem, 4vw, 2.4rem);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(14px) scale(.98);
+  transition: transform .35s var(--ease);
+  margin: auto;
+}
+.review-modal.open .review-modal-panel { transform: none; }
+.review-close {
+  position: absolute; top: .7rem; right: .9rem;
+  width: 40px; height: 40px; border-radius: 10px;
+  font-size: 1.9rem; line-height: 1; color: var(--muted);
+  transition: color .3s, background .3s;
+}
+.review-close:hover { color: var(--ink); background: rgba(0,0,0,.05); }
+.review-modal-title { font-family: var(--serif); font-size: 1.9rem; font-weight: 600; color: var(--ink); }
+.review-modal-sub { color: var(--muted); font-size: .92rem; margin: .3rem 0 1.4rem; }
+
+/* ---- star input ---- */
+.star-input { border: none; margin-bottom: 1.1rem; }
+.star-input legend, .review-field > span {
+  font-size: .76rem; text-transform: uppercase; letter-spacing: .16em;
+  color: var(--muted); margin-bottom: .5rem; display: block;
+}
+.review-field > span em { text-transform: none; letter-spacing: 0; font-style: normal; opacity: .75; }
+.star-input-row { display: flex; gap: .3rem; }
+.star-btn {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: grid; place-items: center;
+  transition: transform .2s var(--ease), background .2s;
+}
+.star-btn svg { width: 30px; height: 30px; fill: none; stroke: var(--gold); stroke-width: 1.4; transition: fill .18s, opacity .18s; opacity: .5; }
+.star-btn.on svg { fill: var(--gold); opacity: 1; }
+.star-btn:hover { transform: translateY(-2px); background: rgba(184,146,74,.1); }
+.star-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.star-input-label { display: block; margin-top: .45rem; font-size: .85rem; color: var(--gold); min-height: 1.2em; }
+
+/* ---- fields ---- */
+.review-field { display: block; margin-bottom: 1.1rem; position: relative; }
+.review-field input, .review-field textarea {
+  width: 100%; font-family: var(--sans); font-size: .98rem; color: var(--ink);
+  background: var(--white); border: 1px solid var(--line); border-radius: 12px;
+  padding: .85rem 1rem; transition: border-color .25s, box-shadow .25s;
+  resize: vertical;
+}
+.review-field input:focus, .review-field textarea:focus {
+  outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,146,74,.18);
+}
+.review-field input::placeholder, .review-field textarea::placeholder { color: #b3aaa0; }
+.review-counter { position: absolute; right: .2rem; bottom: -1.15rem; font-size: .74rem; color: var(--muted); }
+.review-error {
+  background: rgba(176,58,58,.08); border: 1px solid rgba(176,58,58,.3);
+  color: #9c2f2f; border-radius: 10px; padding: .6rem .9rem; font-size: .88rem; margin-bottom: 1rem;
+}
+.review-submit { width: 100%; justify-content: center; margin-top: .6rem; }
+.review-submit[disabled] { opacity: .6; cursor: progress; transform: none; }
+
+@media (max-width: 560px) {
+  .rating-summary { flex-direction: column; gap: .5rem; border-radius: var(--radius); text-align: center; }
+  .rating-of { text-align: center; }
+}
 
 /* =============================================================================
    INSTAGRAM SECTION

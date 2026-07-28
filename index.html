@@ -199,8 +199,23 @@
       <header class="section-head">
         <p class="eyebrow reveal">Kind Words</p>
         <h2 class="section-title reveal">Trusted for the moments that matter</h2>
+
+        <!-- average rating across every review (owner-curated + visitor posted) -->
+        <div class="rating-summary reveal" id="ratingSummary">
+          <span class="rating-average" id="ratingAverage">—</span>
+          <div class="rating-of">
+            <div class="star-row" id="ratingStars" aria-hidden="true"></div>
+            <p class="rating-count" id="ratingCount">No reviews yet</p>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <button type="button" class="btn btn-gold" id="openReviewBtn">Leave a Review</button>
+        </div>
       </header>
+
       <div class="testimonials-grid" id="testimonialsGrid"></div>
+      <p class="reviews-empty" id="reviewsEmpty" hidden>No reviews yet — be the first to share your experience.</p>
     </div>
   </section>
 
@@ -286,6 +301,45 @@
     </div>
   </footer>
 
+  <!-- =========================== REVIEW MODAL ============================ -->
+  <div class="review-modal no-cursor-trail" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle" hidden>
+    <div class="review-modal-panel">
+      <button type="button" class="review-close" id="reviewClose" aria-label="Close">&times;</button>
+      <h3 class="review-modal-title" id="reviewModalTitle">Leave a Review</h3>
+      <p class="review-modal-sub">Thank you for taking a moment to share your experience.</p>
+
+      <form id="reviewForm" novalidate>
+        <fieldset class="star-input" id="starInput">
+          <legend>Your rating <span aria-hidden="true">*</span></legend>
+          <div class="star-input-row" role="radiogroup" aria-label="Rating out of 5 stars">
+            <!-- star buttons injected by reviews.js -->
+          </div>
+          <span class="star-input-label" id="starInputLabel">Select a rating</span>
+        </fieldset>
+
+        <label class="review-field">
+          <span>Your name <span aria-hidden="true">*</span></span>
+          <input type="text" id="reviewName" maxlength="60" autocomplete="name" required />
+        </label>
+
+        <label class="review-field">
+          <span>Occasion <em>(optional)</em></span>
+          <input type="text" id="reviewRole" maxlength="60" placeholder="e.g. Wedding, Birthday, Corporate event" />
+        </label>
+
+        <label class="review-field">
+          <span>What did you enjoy? <span aria-hidden="true">*</span></span>
+          <textarea id="reviewText" rows="4" maxlength="600" required></textarea>
+          <span class="review-counter"><span id="reviewCount">0</span>/600</span>
+        </label>
+
+        <p class="review-error" id="reviewError" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn-gold btn-lg review-submit" id="reviewSubmit">Post Review</button>
+      </form>
+    </div>
+  </div>
+
   <!-- ============================== LIGHTBOX ============================== -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
     <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
@@ -296,6 +350,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/reviews.js"></script>
   <script src="js/burger-cursor-trail.js"></script>
 </body>
 </html>

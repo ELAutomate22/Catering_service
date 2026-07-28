@@ -101,13 +101,26 @@ window.SITE_CONFIG = {
     { image: "gallery-10.jpg", label: "Platter selection",    size: "wide"  },
   ],
 
-  /* -- TESTIMONIALS (placeholder, believable — edit freely) ---------------- */
-  testimonials: [
-    { quote: "The food was beautifully presented and every guest commented on the quality. Everything felt organised, elegant, and stress-free.", name: "Andreea & Mihai", role: "Wedding" },
-    { quote: "Professional from start to finish. The team understood exactly the tone we wanted and the buffet looked stunning.", name: "Elena P.", role: "Corporate event" },
-    { quote: "Fresh, generous and thoughtfully plated. Our guests are still talking about the grazing platters.", name: "Radu M.", role: "50th birthday" },
-    { quote: "Calm, attentive and genuinely lovely to work with. The presentation was flawless and the flavours were exceptional.", name: "Sofia I.", role: "Private dinner" },
-  ],
+  /* -- REVIEWS -------------------------------------------------------------
+     Owner-curated reviews. Anything listed here always shows on the site and
+     counts towards the average rating — use it for reviews you receive by
+     phone or Instagram. Visitor-submitted reviews are added on top of these.
+     Format: { quote, name, role, rating (1-5) }
+     ---------------------------------------------------------------------- */
+  testimonials: [],
+
+  /* -- REVIEW DATABASE (Supabase) ------------------------------------------
+     Visitor reviews are stored here so everyone sees them, on any device.
+     The publishable key is safe to ship in the browser — it only grants what
+     the table's Row Level Security allows (read approved reviews, post a new
+     one). To hide or delete a review, open the Supabase dashboard →
+     Table Editor → catering_reviews.
+     ---------------------------------------------------------------------- */
+  reviewsApi: {
+    url: "https://cadcntchiszzcipaxoce.supabase.co",
+    key: "sb_publishable_rXNwmqoaYXMOZcbA-6rnDw_SJHCh7dP",
+    table: "catering_reviews",
+  },
 
   /* -- INSTAGRAM SECTION --------------------------------------------------- */
   instagram: {

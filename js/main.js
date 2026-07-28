@@ -145,19 +145,6 @@
     });
   }
 
-  function renderTestimonials() {
-    var grid = $("#testimonialsGrid"); if (!grid || !CFG.testimonials) return;
-    CFG.testimonials.forEach(function (t, i) {
-      var initial = (t.name || "•").trim().charAt(0);
-      var card = el("figure", "testimonial reveal",
-        '<blockquote class="testimonial-quote">' + t.quote + '</blockquote>' +
-        '<figcaption class="testimonial-author"><span class="testimonial-avatar">' + initial + '</span>' +
-        '<span><span class="testimonial-name">' + t.name + '</span><br><span class="testimonial-role">' + t.role + '</span></span></figcaption>');
-      card.style.transitionDelay = (i % 2) * 0.08 + "s";
-      grid.appendChild(card);
-    });
-  }
-
   function renderAbout() {
     var body = $("#aboutBody");
     if (body && CFG.about && CFG.about.body) {
@@ -472,7 +459,7 @@
     renderMenu();
     renderEvents();
     renderGallery();
-    renderTestimonials();
+    // reviews (incl. testimonials grid) are owned by js/reviews.js
     renderInstaGrid();
     // wire fallbacks for every image now in the DOM
     $all(".media img").forEach(wireImageFallback);
