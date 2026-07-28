@@ -364,8 +364,10 @@
           card.style.opacity = String(opa);
         });
         if (plate) {
-          // subtle rotation only — no excessive spinning
-          plate.style.transform = "translate(-50%,-50%) rotate(" + (e * 36) + "deg) scale(" + (0.82 + e * 0.22) + ")";
+          // scales and fades in step with the satellites. No spin: the rings are
+          // circular (rotation invisible) so it would only spin the photograph.
+          plate.style.transform = "translate(-50%,-50%) scale(" + (0.82 + e * 0.22) + ")";
+          plate.style.opacity = String(Math.min(1, e * 1.6));
         }
         if (fCopy) {
           var copyFade = e < 0.5 ? e * 2 : (1 - (e - 0.5) * 1.4);
@@ -375,8 +377,9 @@
       }
     }
 
-    // initialise float cards hidden-ish before first paint
+    // initialise the circles hidden before first paint (they fade in on scroll)
     floatCards.forEach(function (c) { c.style.opacity = "0"; });
+    if (plate) plate.style.opacity = "0";
 
     // Continuous rAF loop is ONLY used to ease the hero mouse-parallax, and it
     // self-stops whenever the hero leaves the viewport (no wasted repaints).
