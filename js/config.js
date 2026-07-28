@@ -89,16 +89,14 @@ window.SITE_CONFIG = {
 
   /* -- GALLERY (drop your photos into /assets/images with these names) ------ */
   gallery: [
-    { image: "gallery-01.jpg", label: "Canapé and charcuterie platter", size: "tall" },
-    { image: "gallery-02.jpg", label: "Canapé selection",     size: "wide"  },
-    { image: "gallery-03.jpg", label: "Starters table",       size: ""      },
-    { image: "gallery-04.jpg", label: "Grazing platter",      size: ""      },
+    { image: "gallery-01.jpg", label: "Canapé and charcuterie platter",      size: "tall" },
+    { image: "gallery-03.jpg", label: "Rice served from chafing dishes",     size: ""     },
+    { image: "gallery-04.jpg", label: "Chicken and relish at the buffet",    size: ""     },
     { image: "gallery-05.jpg", label: "Banquet table at a family celebration", size: "tall" },
-    { image: "gallery-06.jpg", label: "Buffet display",       size: "wide"  },
-    { image: "gallery-07.jpg", label: "Fresh ingredients",    size: ""      },
-    { image: "gallery-08.jpg", label: "Event setup",          size: ""      },
-    { image: "gallery-09.jpg", label: "Our team at an event buffet", size: "tall" },
-    { image: "gallery-10.jpg", label: "Platter selection",    size: "wide"  },
+    { image: "gallery-06.jpg", label: "Traditional display at an event",     size: "wide" },
+    { image: "gallery-07.jpg", label: "Traditional potjie pot cooking",      size: ""     },
+    { image: "gallery-08.jpg", label: "Gold chafing dishes at an event setup", size: ""   },
+    { image: "gallery-09.jpg", label: "Our team at an event buffet",         size: "tall" },
   ],
 
   /* -- REVIEWS -------------------------------------------------------------
