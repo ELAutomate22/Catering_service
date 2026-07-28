@@ -60,10 +60,10 @@ window.SITE_CONFIG = {
     { icon: "rings",   title: "Wedding Catering",     desc: "Refined menus and elegant plating designed around your celebration, from the first canapé to the final toast." },
     { icon: "sparkle", title: "Private Events",       desc: "Intimate dinners and private gatherings, catered with warmth, precision and quiet luxury." },
     { icon: "briefcase", title: "Corporate Catering", desc: "Polished catering for meetings, launches and company celebrations that make the right impression." },
-    { icon: "cake",    title: "Birthday Celebrations", desc: "Joyful, generous spreads and showpiece desserts for milestone birthdays and family parties." },
+    { icon: "cake",    title: "Birthday Celebrations", desc: "Joyful, generous spreads and showpiece platters for milestone birthdays and family parties." },
     { icon: "buffet",  title: "Buffet Catering",      desc: "Abundant, beautifully styled buffets with seasonal dishes for every kind of gathering." },
     { icon: "platter", title: "Luxury Platters",      desc: "Grazing boards and sharing platters, arranged as centrepieces that look as good as they taste." },
-    { icon: "dessert", title: "Dessert Tables",       desc: "Curated dessert tables and patisserie displays styled to match the mood of your event." },
+    { icon: "canape",  title: "Starters & Canapés",   desc: "Hand-finished canapés, samosas and pastry bites, styled to match the mood of your event." },
     { icon: "menu",    title: "Custom Menus",         desc: "Bespoke menus tailored to your theme, dietary needs and personal taste — created just for you." },
   ],
 
@@ -91,21 +91,21 @@ window.SITE_CONFIG = {
   gallery: [
     { image: "gallery-01.jpg", label: "Plated main course",   size: "tall"  },
     { image: "gallery-02.jpg", label: "Canapé selection",     size: "wide"  },
-    { image: "gallery-03.jpg", label: "Dessert table",        size: ""      },
+    { image: "gallery-03.jpg", label: "Starters table",       size: ""      },
     { image: "gallery-04.jpg", label: "Grazing platter",      size: ""      },
     { image: "gallery-05.jpg", label: "Wedding styling",      size: "tall"  },
     { image: "gallery-06.jpg", label: "Buffet display",       size: "wide"  },
     { image: "gallery-07.jpg", label: "Fresh ingredients",    size: ""      },
     { image: "gallery-08.jpg", label: "Event setup",          size: ""      },
     { image: "gallery-09.jpg", label: "Signature dish",       size: "tall"  },
-    { image: "gallery-10.jpg", label: "Sweet selection",      size: "wide"  },
+    { image: "gallery-10.jpg", label: "Platter selection",    size: "wide"  },
   ],
 
   /* -- TESTIMONIALS (placeholder, believable — edit freely) ---------------- */
   testimonials: [
     { quote: "The food was beautifully presented and every guest commented on the quality. Everything felt organised, elegant, and stress-free.", name: "Andreea & Mihai", role: "Wedding" },
     { quote: "Professional from start to finish. The team understood exactly the tone we wanted and the buffet looked stunning.", name: "Elena P.", role: "Corporate event" },
-    { quote: "Fresh, generous and thoughtfully plated. Our guests are still talking about the dessert table.", name: "Radu M.", role: "50th birthday" },
+    { quote: "Fresh, generous and thoughtfully plated. Our guests are still talking about the grazing platters.", name: "Radu M.", role: "50th birthday" },
     { quote: "Calm, attentive and genuinely lovely to work with. The presentation was flawless and the flavours were exceptional.", name: "Sofia I.", role: "Private dinner" },
   ],
 

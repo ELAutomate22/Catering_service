@@ -76,7 +76,7 @@
     cake:    '<svg viewBox="0 0 24 24"><path d="M4 20h16v-6a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3zM12 4v3M8 6v1M16 6v1M4 16h16"/></svg>',
     buffet:  '<svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 0 1 18 0zM2 15h20M6 15v4M18 15v4"/></svg>',
     platter: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="9" ry="4"/><path d="M12 9V6M9 6h6"/></svg>',
-    dessert: '<svg viewBox="0 0 24 24"><path d="M6 11h12l-1.4 9H7.4zM12 11c0-3 2-4 2-6a2 2 0 0 0-4 0"/></svg>',
+    canape:  '<svg viewBox="0 0 24 24"><path d="M12 3v4.5"/><circle cx="12" cy="10" r="2.2"/><rect x="7" y="13.4" width="10" height="4.2" rx="1"/><path d="M5 20h14"/></svg>',
     menu:    '<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>'
   };
 
