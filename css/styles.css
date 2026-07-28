@@ -598,6 +598,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    ========================================================================== */
 .insta { background: linear-gradient(160deg, var(--green) 0%, #170e2b 100%); color: #F6EFE2; text-align: center; }
 .insta-head { max-width: 640px; margin: 0 auto 3rem; }
+/* no tile grid below (no posts yet) → drop the gap that separated them */
+.insta-head:last-child { margin-bottom: 0; }
 .insta-head .section-lead { margin-inline: auto; }
 .insta-handle { font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--gold-2); margin: 1rem 0 1.6rem; }
 .insta-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: .8rem; }

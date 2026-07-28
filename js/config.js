@@ -113,7 +113,8 @@ window.SITE_CONFIG = {
   instagram: {
     heading: "See Our Latest Creations on Instagram",
     body: "See more of our food presentation, events, and catering work on Instagram.",
-    // Optional preview tiles (use your own photo names or leave as-is for placeholders)
-    tiles: ["insta-01.jpg", "insta-02.jpg", "insta-03.jpg", "insta-04.jpg", "insta-05.jpg", "insta-06.jpg"],
+    // Optional post preview tiles — empty while there are no posts yet.
+    // Add filenames here (and restore the grid div in index.html) to show them.
+    tiles: [],
   },
 };
