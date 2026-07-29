@@ -523,10 +523,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .event-card {
   position: relative; border-radius: var(--radius); overflow: hidden;
   aspect-ratio: 3/4; box-shadow: var(--shadow-sm);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
 }
+.event-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
 .event-card:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
 .event-card .media { position: absolute; inset: 0; border-radius: 0; }
-.event-card:hover .media img { transform: scale(1.07); }
+.event-card:hover .media img { transform: scale(1.08); }
 .event-body {
   position: absolute; inset: 0; z-index: 2; padding: 1.4rem;
   display: flex; flex-direction: column; justify-content: flex-end; color: #fff;
