@@ -66,6 +66,38 @@
   }
 
   /* =========================================================================
+     1b. PHONE LINKS — dial on phones, do nothing on desktops
+     -------------------------------------------------------------------------
+     On a phone or tablet a tel: link hands the number straight to the dialler,
+     ready to call. A desktop can't place a call, so there the click is
+     neutralised (no Skype/FaceTime prompt, no dead-end navigation) while the
+     number stays on screen to read or copy.
+
+     The check errs on the side of allowing calls: it only blocks when the
+     device is clearly a desktop, so an unusual mobile browser never loses the
+     ability to dial.
+     ====================================================================== */
+  function isDesktopDevice() {
+    var ua = navigator.userAgent || "";
+    var mobileUA = /Android|iPhone|iPad|iPod|webOS|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile|Tablet|Silk|Kindle|PlayBook/i.test(ua);
+    // iPadOS 13+ reports a desktop Mac UA, so detect it by touch capability
+    var iPadOS = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+    return !mobileUA && !iPadOS;
+  }
+
+  function initPhoneLinks() {
+    if (!isDesktopDevice()) return;         // phones/tablets: leave tel: alone
+    document.documentElement.classList.add("no-dialler");
+    // delegated in the capture phase so it also covers phone links that are
+    // rendered later (contact cards, footer)
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      var a = t && t.closest ? t.closest('a[href^="tel:"]') : null;
+      if (a) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+  }
+
+  /* =========================================================================
      2. RENDER SECTIONS
      ====================================================================== */
   // small inline SVG icon set for the service cards
@@ -453,6 +485,7 @@
      ====================================================================== */
   function init() {
     bindConfig();
+    initPhoneLinks();
     renderPhones();
     renderAbout();
     renderServices();
