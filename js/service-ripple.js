@@ -17,14 +17,12 @@
   "use strict";
 
   var CONFIG = {
-    rgb: [61, 37, 96],   // #3D2560 — the site's royal purple
+    rgb: [60, 37, 104],  // #3C2568 — the hero/home-page purple
     duration: 2200,      // ms for a wave to cross the grid
-    maxAlpha: 0.34,      // peak ring opacity (still light enough to read through)
-    rings: 6,            // trailing rings — a wide band so several cards light at once
-    ringGap: 88,         // px between those rings
-    lineWidth: 3.4,
-    sheenAlpha: 0.09,    // soft water wash filling the band behind the rings
-    splashAlpha: 0.16,   // the initial droplet impact blob
+    maxAlpha: 0.55,      // peak fill opacity of a wave band
+    rings: 6,            // number of waves in the band
+    ringGap: 88,         // px between wave crests
+    splashAlpha: 0.45,   // the initial droplet impact blob
     maxRipples: 4        // concurrent waves
   };
 
@@ -84,16 +82,35 @@
         // origin translated into this card's own coordinate space
         var ox = rp.x - c.x, oy = rp.y - c.y;
 
-        // soft water sheen filling the band behind the leading edge, so the
-        // wave reads as moving water rather than bare outlines
+        // The wave band is painted as SOLID PURPLE water rather than outlines.
+        // A single radial gradient carries every crest: each wave peaks at full
+        // colour and fades away between crests, so the ripples read as bands of
+        // colour spreading outward instead of thin lines.
         var band = CONFIG.rings * CONFIG.ringGap;
         var inner = Math.max(0, R - band);
-        if (R > 1) {
+        var span = R - inner;
+        if (R > 1 && span > 1) {
           var gs = ctx.createRadialGradient(ox, oy, inner, ox, oy, R);
-          var sh = CONFIG.sheenAlpha * fade;
-          gs.addColorStop(0, "rgba(" + CONFIG.rgb + ",0)");
-          gs.addColorStop(0.75, "rgba(" + CONFIG.rgb + "," + sh.toFixed(4) + ")");
-          gs.addColorStop(1, "rgba(" + CONFIG.rgb + ",0)");
+          var stops = [[0, 0], [1, 0]];               // fade out at both edges
+          for (var k = 0; k < CONFIG.rings; k++) {
+            var rad = R - k * CONFIG.ringGap;         // this crest's radius
+            if (rad <= inner) continue;
+            var t = (rad - inner) / span;             // its place in the gradient
+            var a = CONFIG.maxAlpha * fade * (1 - k / (CONFIG.rings + 0.5));
+            if (a <= 0.004) continue;
+            var halfW = (CONFIG.ringGap * 0.5) / span;
+            stops.push([t - halfW, 0]);               // trough before the crest
+            stops.push([t, a]);                       // full-colour crest
+            stops.push([t + halfW, 0]);               // trough after it
+          }
+          stops.sort(function (m, n) { return m[0] - n[0]; });
+          var last = -1;
+          for (var s = 0; s < stops.length; s++) {
+            var off = Math.min(1, Math.max(0, stops[s][0]));
+            if (off <= last) off = Math.min(1, last + 0.0001); // must ascend
+            last = off;
+            gs.addColorStop(off, "rgba(" + CONFIG.rgb + "," + stops[s][1].toFixed(4) + ")");
+          }
           ctx.fillStyle = gs;
           ctx.beginPath();
           ctx.arc(ox, oy, R, 0, Math.PI * 2);
@@ -114,18 +131,6 @@
           ctx.fill();
         }
 
-        // concentric rings trailing the leading edge
-        for (var k = 0; k < CONFIG.rings; k++) {
-          var rad = R - k * CONFIG.ringGap;
-          if (rad <= 0) continue;
-          var a = CONFIG.maxAlpha * fade * (1 - k / (CONFIG.rings + 0.5));
-          if (a <= 0.004) continue;
-          ctx.beginPath();
-          ctx.arc(ox, oy, rad, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(" + CONFIG.rgb + "," + a.toFixed(4) + ")";
-          ctx.lineWidth = CONFIG.lineWidth * (1 - p * 0.45);
-          ctx.stroke();
-        }
       }
     }
   }
