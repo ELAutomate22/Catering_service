@@ -161,7 +161,6 @@
         <figure class="media float-card float-card--4" data-fdepth="2.6" data-label="Event setup"><img src="assets/images/feature-4.jpg" alt="Styled catering setup at an event" loading="lazy" /></figure>
 
         <div class="feature3d-copy" id="feature3dCopy">
-          <p class="eyebrow">Presentation in Motion</p>
           <h2 class="section-title">Every detail, considered</h2>
           <p class="section-lead">Layer by layer, plate by plate — a catering experience designed to feel as good as it looks.</p>
         </div>
@@ -344,7 +343,9 @@
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
     <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
-    <figure class="lightbox-figure media" id="lightboxFigure" data-label="Photo"><img src="" alt="" id="lightboxImg" /></figure>
+    <!-- src is set by main.js when a gallery item is opened (an empty src="" would
+         make the browser re-request the page) -->
+    <figure class="lightbox-figure media" id="lightboxFigure" data-label="Photo"><img alt="" id="lightboxImg" /></figure>
     <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
   </div>
 

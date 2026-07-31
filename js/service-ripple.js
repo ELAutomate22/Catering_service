@@ -162,17 +162,37 @@
     }
     measure();
 
-    var gridRect = null;
-    grid.addEventListener("pointerenter", function () { gridRect = grid.getBoundingClientRect(); }, true);
+    // A droplet lands wherever the card is touched:
+    //   • mouse (laptop/desktop) — when the pointer moves onto the card
+    //   • touch/pen (phone/tablet) — where the finger lands
+    // Listeners are passive and never preventDefault, so tapping and scrolling
+    // behave exactly as before.
+    function dropFrom(e) {
+      var g = grid.getBoundingClientRect();
+      spawn(e.clientX - g.left, e.clientY - g.top);
+    }
 
-    // a droplet lands where the pointer enters a card
     for (var j = 0; j < cards.length; j++) {
       (function (card) {
+        // hover entry — mouse only (touch also fires pointerenter, handled below)
         card.el.addEventListener("pointerenter", function (e) {
           if (e.pointerType && e.pointerType !== "mouse") return;
-          var g = grid.getBoundingClientRect();
-          spawn(e.clientX - g.left, e.clientY - g.top);
+          dropFrom(e);
         });
+
+        if (window.PointerEvent) {
+          // finger or stylus press
+          card.el.addEventListener("pointerdown", function (e) {
+            if (e.pointerType === "mouse") return;   // mouse already handled on enter
+            dropFrom(e);
+          }, { passive: true });
+        } else {
+          // very old browsers without Pointer Events
+          card.el.addEventListener("touchstart", function (e) {
+            var t = e.touches && e.touches[0];
+            if (t) dropFrom(t);
+          }, { passive: true });
+        }
       })(cards[j]);
     }
 
