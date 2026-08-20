@@ -1,5 +1,5 @@
 /* =============================================================================
-   REVIEWS — public star reviews backed by Supabase
+   REVIEWS — public star reviews backed by Cloudflare D1
    -----------------------------------------------------------------------------
    • Loads reviews from the database so every visitor sees the same list.
    • "Leave a Review" opens a modal: star rating + name + occasion + details.
@@ -8,8 +8,9 @@
      recalculated from every review, including owner-curated ones in
      config.js → testimonials.
 
-   Talks to Supabase's REST API with plain fetch — no external library, so the
-   site stays dependency-free. Connection details live in config.js →
+   Talks to the Cloudflare Worker in /worker with plain fetch — no external
+   library, so the site stays dependency-free. There is no API key in the
+   browser; the Worker owns the database. The endpoint lives in config.js →
    reviewsApi.
    ========================================================================== */
 (function () {
@@ -17,7 +18,9 @@
 
   var CFG = window.SITE_CONFIG || {};
   var API = CFG.reviewsApi || {};
-  var ENDPOINT = API.url ? API.url + "/rest/v1/" + API.table : null;
+  var ENDPOINT = API.url
+    ? String(API.url).replace(/\/+$/, "") + (API.path || "/api/reviews")
+    : null;
 
   function $(s, c) { return (c || document).querySelector(s); }
 
@@ -110,9 +113,7 @@
   /* ---------------------------------------------------------------- loading */
   function loadReviews() {
     if (!ENDPOINT) { renderAll(); return; }
-    fetch(ENDPOINT + "?select=name,role,rating,quote,created_at&order=created_at.desc&limit=100", {
-      headers: { apikey: API.key, Authorization: "Bearer " + API.key }
-    })
+    fetch(ENDPOINT)
       .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)); })
       .then(function (rows) {
         reviews = (rows || []).concat(seeded);
@@ -160,6 +161,9 @@
 
   function openModal() {
     var m = $("#reviewModal"); if (!m) return;
+    showError("");                                  // don't carry a stale failure over
+    var t = $("#reviewText"), c = $("#reviewCount");
+    if (t && c) c.textContent = t.value.length;     // counter matches whatever is typed
     lastFocus = document.activeElement;
     m.hidden = false;
     requestAnimationFrame(function () { m.classList.add("open"); });
@@ -204,17 +208,21 @@
     btn.textContent = "Posting…";
     fetch(ENDPOINT, {
       method: "POST",
-      headers: {
-        apikey: API.key,
-        Authorization: "Bearer " + API.key,
-        "Content-Type": "application/json",
-        Prefer: "return=representation"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(row)
     })
-      .then(function (r) { return r.ok ? r.json() : r.text().then(function (t) { throw new Error(t || ("HTTP " + r.status)); }); })
+      .then(function (r) {
+        return r.json()
+          .catch(function () { return {}; })
+          .then(function (data) {
+            // The Worker explains rejections (validation, flood control) in
+            // `error` — show that rather than a generic failure.
+            if (!r.ok) throw new Error((data && data.error) || "HTTP " + r.status);
+            return data;
+          });
+      })
       .then(function (saved) {
-        reviews.unshift((saved && saved[0]) || row);
+        reviews.unshift(saved && saved.name ? saved : row);
         renderAll();
         closeModal();
         // reset for next time
@@ -226,8 +234,8 @@
         });
         $("#reviewCount").textContent = "0";
       })
-      .catch(function () {
-        showError("Sorry — your review couldn’t be posted just now. Please try again.");
+      .catch(function (err) {
+        showError((err && err.message) || "Sorry — your review couldn’t be posted just now. Please try again.");
       })
       .then(function () {
         btn.disabled = false;

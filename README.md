@@ -2,9 +2,14 @@
 
 *Brand: **Yeshua Royal Catering Services** · Tagline: **Flavours That Reigns** · Royal purple + gold theme.*
 
-A premium, cinematic, **display-only** catering website with a 3D scroll landing
-experience. Built with plain HTML, CSS and JavaScript — **no build step, no npm**.
-Just open `index.html` (or upload the folder to any host) and it works.
+A premium, cinematic catering website with a 3D scroll landing experience. The
+site itself is plain HTML, CSS and JavaScript — **no build step, no npm**. Just
+open `index.html` (or upload the folder to any host) and it works.
+
+The one moving part is the **star reviews** section, which stores visitor
+reviews in a Cloudflare D1 database via the Worker in `worker/`. Until that
+Worker is deployed and its URL is set in `js/config.js`, the reviews section
+simply shows its empty state — the rest of the site is unaffected.
 
 > This site is for **presentation and credibility only**. Visitors contact the
 > business in exactly two ways: **calling the phone number** or **opening the
@@ -85,7 +90,9 @@ catering services website/
 ├── css/styles.css       # design system + responsive + placeholder styling
 ├── js/
 │   ├── config.js        # ← EDIT THIS (brand, phone, Instagram, content)
-│   └── main.js          # binding, rendering, 3D scroll engine, lightbox
+│   ├── main.js          # binding, rendering, 3D scroll engine, lightbox
+│   └── reviews.js       # star reviews: modal, average, talks to the Worker
+├── worker/              # reviews API — Cloudflare Worker + D1 (see its README)
 ├── assets/
 │   ├── logo/logo.svg    # ← replace with your logo
 │   └── images/          # ← drop your photos here (see README.txt inside)
@@ -102,4 +109,5 @@ All colours live at the top of `css/styles.css` under `:root`. Change
 
 No online ordering · no cart · no checkout · no payment · no booking · no
 reservation · no contact/enquiry form · no “Order/Book/Reserve” buttons · no
-WhatsApp. Contact is by **phone** and **Instagram** only, as required.
+WhatsApp. Contact is by **phone** and **Instagram** only, as required. The star
+reviews are the only place a visitor submits anything.

@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "yeshua-reviews-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-20",
+  "observability": { "enabled": true },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "yeshua-reviews",
+      "database_id": "a35dece6-6072-411b-88a4-5d63b8844686"
+    }
+  ],
+
+  "vars": {
+    // Only these origins may read or post reviews. Add your custom domain
+    // here too if you move off netlify.app, comma-separated.
+    "ALLOWED_ORIGINS": "https://yeshua-royal-catering.netlify.app"
+  }
+
+  // IP_SALT is a secret, not a var:
+  //   npx wrangler secret put IP_SALT
+}

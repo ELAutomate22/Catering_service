@@ -1,0 +1,7 @@
+# The repo root is published as-is, so anything committed here is reachable on
+# the live site. The Worker backend lives in /worker for version control only —
+# it is deployed to Cloudflare, never served from the website.
+[[redirects]]
+  from = "/worker/*"
+  to = "/index.html"
+  status = 404

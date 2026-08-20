@@ -107,17 +107,17 @@ window.SITE_CONFIG = {
      ---------------------------------------------------------------------- */
   testimonials: [],
 
-  /* -- REVIEW DATABASE (Supabase) ------------------------------------------
-     Visitor reviews are stored here so everyone sees them, on any device.
-     The publishable key is safe to ship in the browser — it only grants what
-     the table's Row Level Security allows (read approved reviews, post a new
-     one). To hide or delete a review, open the Supabase dashboard →
-     Table Editor → catering_reviews.
+  /* -- REVIEW DATABASE (Cloudflare) ----------------------------------------
+     Visitor reviews are stored in a Cloudflare D1 database, reached through
+     the Worker in /worker. There is no API key in the browser: the Worker is
+     the only thing that can touch the database, and it only ever allows
+     reading approved reviews and posting a new one.
+     To hide or delete a review, open the Cloudflare dashboard →
+     Storage & Databases → D1 → yeshua-reviews → set approved = 0.
      ---------------------------------------------------------------------- */
   reviewsApi: {
-    url: "https://cadcntchiszzcipaxoce.supabase.co",
-    key: "sb_publishable_rXNwmqoaYXMOZcbA-6rnDw_SJHCh7dP",
-    table: "catering_reviews",
+    url: "https://yeshua-reviews-api.yeshuaroyalcatering.workers.dev",
+    path: "/api/reviews",
   },
 
   /* -- INSTAGRAM SECTION --------------------------------------------------- */
