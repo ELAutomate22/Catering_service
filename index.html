@@ -227,6 +227,16 @@
         <p class="section-lead section-lead--light reveal" data-text="instagram.body">See more of our food presentation, events, and catering work on Instagram.</p>
         <p class="insta-handle reveal" data-text="contact.instagramHandle">@your.catering</p>
         <div class="reveal"><a class="btn btn-gold" data-href-ig>View Instagram</a></div>
+
+        <!-- Cross-link to the cake business. main.js hides this block when
+             config.js -> cakes.url is empty. -->
+        <div class="insta-cakes reveal" id="cakesCta" hidden>
+          <p class="insta-cakes-msg" data-text="cakes.message">Something sweet to finish? We bake the cakes, too.</p>
+          <a class="btn btn-outline" data-href-cakes>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16v-6a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3zM12 4v3M8 6v1M16 6v1M4 16h16"/></svg>
+            <span data-text="cakes.cta">View Our Cakes</span>
+          </a>
+        </div>
       </div>
       <!-- Post preview tiles removed until there are posts to show. To bring
            them back, restore <div class="insta-grid" id="instaGrid"></div>

@@ -903,3 +903,18 @@ a.contact-card-value:hover { color: var(--gold); }
   .ls-overlay { display: none !important; }
   .ls-frame { transform: none !important; }
 }
+
+/* ---- Cakes cross-link (sister site), under the Instagram button ---------- */
+.insta-cakes {
+  margin-top: 2.6rem;
+  padding-top: 2.1rem;
+  border-top: 1px solid rgba(246,239,226,.14);
+}
+.insta-cakes[hidden] { display: none; }
+.insta-cakes-msg {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: rgba(246,239,226,.86);
+  margin: 0 0 1.15rem;
+}

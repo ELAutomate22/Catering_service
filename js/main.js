@@ -61,6 +61,21 @@
       node.setAttribute("target", "_blank");
       node.setAttribute("rel", "noopener noreferrer");
     });
+    // Cakes cross-link (sister site). No URL configured -> the block stays
+    // hidden, so the section simply reads as it did before.
+    var cakesUrl = get(CFG, "cakes.url") || "";
+    var cakesBlock = $("#cakesCta");
+    if (cakesBlock) {
+      if (cakesUrl) {
+        $all("[data-href-cakes]").forEach(function (node) {
+          node.setAttribute("href", cakesUrl);
+          node.setAttribute("target", "_blank");
+          node.setAttribute("rel", "noopener noreferrer");
+        });
+        cakesBlock.hidden = false;
+      }
+    }
+
     var y = $("#year"); if (y) y.textContent = new Date().getFullYear();
     document.title = (get(CFG, "brand.name") || "SAVORÉ") + " — " + (get(CFG, "brand.tagline") || "Fine Catering");
   }

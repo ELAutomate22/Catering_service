@@ -120,6 +120,16 @@ window.SITE_CONFIG = {
     path: "/api/reviews",
   },
 
+  /* -- SISTER SITE: CAKES ---------------------------------------------------
+     Cross-link to the cake business, shown under the Instagram button.
+     Clear `url` to hide the whole block — nothing else needs changing.
+     ---------------------------------------------------------------------- */
+  cakes: {
+    url: "https://elshadai-cake-creations.netlify.app/",
+    message: "Something sweet to finish? We bake the cakes, too.",
+    cta: "View Our Cakes",
+  },
+
   /* -- INSTAGRAM SECTION --------------------------------------------------- */
   instagram: {
     heading: "See Our Latest Creations on Instagram",
