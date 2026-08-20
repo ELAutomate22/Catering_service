@@ -1,7 +1,11 @@
 # The repo root is published as-is, so anything committed here is reachable on
 # the live site. The Worker backend lives in /worker for version control only —
 # it is deployed to Cloudflare, never served from the website.
+#
+# force = true is required: without it Netlify serves the real file and never
+# reaches this rule, because existing static assets take precedence.
 [[redirects]]
   from = "/worker/*"
   to = "/index.html"
   status = 404
+  force = true
