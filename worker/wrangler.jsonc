@@ -29,8 +29,11 @@
 
   "vars": {
     // Origins allowed to call the PUBLIC endpoints (reviews, quote form).
+    // The custom domain is what real visitors use; the netlify.app address is
+    // kept so preview and fallback URLs keep working. Both www and apex are
+    // listed because they are separate origins to a browser.
     // The admin API is same-origin and never uses this.
-    "ALLOWED_ORIGINS": "https://yeshua-royal-catering.netlify.app"
+    "ALLOWED_ORIGINS": "https://yeshuaroyalcatering.co.uk,https://www.yeshuaroyalcatering.co.uk,https://yeshua-royal-catering.netlify.app"
   }
 
   // Secrets (never in this file):
