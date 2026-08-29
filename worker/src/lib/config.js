@@ -16,7 +16,9 @@
 const on = (value, label, enabled = true) => ({ value, label, enabled });
 
 export const CONFIG = {
-  currency: { default: "EUR", options: ["EUR", "RON", "GBP", "USD"] },
+  // The business quotes in pounds. Add another code here if that ever changes;
+  // the admin currency selector and the quote fields read straight from this.
+  currency: { default: "GBP", options: ["GBP"] },
 
   preferredContact: [
     on("phone", "Phone"),
@@ -24,21 +26,11 @@ export const CONFIG = {
     on("whatsapp", "WhatsApp"),
   ],
 
-  countries: [
-    on("RO", "Romania"),
-    on("GB", "United Kingdom"),
-    on("IE", "Ireland"),
-    on("MD", "Moldova"),
-    on("DE", "Germany"),
-    on("FR", "France"),
-    on("IT", "Italy"),
-    on("ES", "Spain"),
-    on("AT", "Austria"),
-    on("BE", "Belgium"),
-    on("NL", "Netherlands"),
-    on("OTHER", "Other"),
-  ],
-  defaultCountry: "RO",
+  // UK only, so the form asks no country question at all. Every address is
+  // stored as GB. Reinstating a choice means adding a list here and a field in
+  // js/quote-form.js.
+  country: "GB",
+  countryLabel: "United Kingdom",
 
   eventTypes: [
     on("wedding", "Wedding"),
@@ -123,27 +115,6 @@ export const CONFIG = {
     on("other_dietary", "Other dietary requirements"),
   ],
 
-  // Flip `enabled` to false for anything the business does not offer. The form
-  // stops showing it immediately; existing enquiries keep rendering it.
-  additionalServices: [
-    on("serving_staff", "Serving staff"),
-    on("chefs", "Chefs on-site"),
-    on("table_service", "Table service"),
-    on("buffet_setup", "Buffet setup"),
-    on("styling", "Food presentation / styling"),
-    on("plates_cutlery", "Plates and cutlery"),
-    on("glassware", "Glassware"),
-    on("tables", "Tables"),
-    on("chairs", "Chairs"),
-    on("linen", "Table linen"),
-    on("decorations", "Decorations"),
-    on("delivery_only", "Delivery only"),
-    on("setup_cleanup", "Setup and cleanup"),
-    on("cake_service", "Cake service"),
-    on("advise", "Unsure — please advise"),
-    on("other", "Other"),
-  ],
-
   eventStyles: [
     on("elegant", "Elegant / Luxury"),
     on("traditional", "Traditional"),
@@ -158,15 +129,16 @@ export const CONFIG = {
   ],
 
   budgets: [
-    on("under_500", "Under €500"),
-    on("500_1000", "€500 – €1,000"),
-    on("1000_2500", "€1,000 – €2,500"),
-    on("2500_5000", "€2,500 – €5,000"),
-    on("5000_10000", "€5,000 – €10,000"),
-    on("over_10000", "€10,000+"),
+    on("under_500", "Under £500"),
+    on("500_1000", "£500 – £1,000"),
+    on("1000_2500", "£1,000 – £2,500"),
+    on("2500_5000", "£2,500 – £5,000"),
+    on("5000_10000", "£5,000 – £10,000"),
+    on("over_10000", "£10,000+"),
     on("unsure", "Not sure yet"),
     on("private", "Prefer not to say"),
   ],
+
 
   referralSources: [
     on("instagram", "Instagram"),
@@ -233,8 +205,6 @@ export function publicConfig() {
 
   return {
     preferredContact: strip(CONFIG.preferredContact),
-    countries: strip(CONFIG.countries),
-    defaultCountry: CONFIG.defaultCountry,
     eventTypes: strip(CONFIG.eventTypes),
     venueStatuses: strip(CONFIG.venueStatuses),
     cateringServices: strip(CONFIG.cateringServices),
@@ -242,7 +212,6 @@ export function publicConfig() {
     foodStyles: strip(CONFIG.foodStyles),
     menuAnswers: strip(CONFIG.menuAnswers),
     dietaryRequirements: strip(CONFIG.dietaryRequirements),
-    additionalServices: strip(CONFIG.additionalServices),
     eventStyles: strip(CONFIG.eventStyles),
     budgets: strip(CONFIG.budgets),
     referralSources: strip(CONFIG.referralSources),

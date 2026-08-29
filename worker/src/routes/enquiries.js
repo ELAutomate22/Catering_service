@@ -96,8 +96,9 @@ export async function createEnquiry(request, env) {
        catering_services, catering_services_other, meal_requirements, meal_requirements_other,
        food_style, food_style_other, existing_menu, menu_description,
        dietary_requirements, dietary_details, affected_guest_count,
-       additional_services, additional_services_other, event_style, theme_colours,
+       event_style, theme_colours,
        approximate_budget, referral_source, additional_information,
+       quote_currency,
        status, priority, privacy_consent, privacy_consent_at, source, submitter_hash
      ) VALUES (
        ?, ?, ?, ?,
@@ -109,8 +110,9 @@ export async function createEnquiry(request, env) {
        ?, ?, ?, ?,
        ?, ?, ?, ?,
        ?, ?, ?,
-       ?, ?, ?, ?,
+       ?, ?,
        ?, ?, ?,
+       ?,
        'new', 'normal', 1, ?, 'website', ?
      )`
   ).bind(
@@ -124,9 +126,9 @@ export async function createEnquiry(request, env) {
     JSON.stringify(data.meal_requirements), data.meal_requirements_other,
     data.food_style, data.food_style_other, data.existing_menu, data.menu_description,
     JSON.stringify(data.dietary_requirements), data.dietary_details, data.affected_guest_count,
-    JSON.stringify(data.additional_services), data.additional_services_other,
     JSON.stringify(data.event_style), data.theme_colours,
     data.approximate_budget, data.referral_source, data.additional_information,
+    CONFIG.currency.default,
     created, hash
   ).run();
 

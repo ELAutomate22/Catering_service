@@ -133,8 +133,6 @@ export function validateEnquiry(body) {
   const cateringServices = many(body.catering_services, CONFIG.cateringServices, "catering_services", { required: true, label: "Catering service" });
   const dietary = many(body.dietary_requirements, CONFIG.dietaryRequirements, "dietary_requirements", { label: "Dietary requirement" });
   const foodStyle = pick(body.food_style, CONFIG.foodStyles, "food_style", { label: "Food style" });
-  const additional = many(body.additional_services, CONFIG.additionalServices, "additional_services", { label: "Additional service" });
-
   const dietaryBeyondNone = dietary.some((d) => d !== "none");
 
   return {
@@ -147,7 +145,8 @@ export function validateEnquiry(body) {
     city: text(body.city, "city", { label: "City" }),
     region: text(body.region, "region", { label: "County or region" }),
     postcode: text(body.postcode, "postcode", { max: 20, label: "Postcode" }),
-    country: pick(body.country, CONFIG.countries, "country", { label: "Country" }),
+    // UK only: not asked, not trusted from the client, just recorded.
+    country: CONFIG.country,
 
     // event
     event_type: eventType,
@@ -165,7 +164,7 @@ export function validateEnquiry(body) {
     venue_city: text(body.venue_city, "venue_city", { label: "Venue city" }),
     venue_region: text(body.venue_region, "venue_region", { label: "Venue region" }),
     venue_postcode: text(body.venue_postcode, "venue_postcode", { max: 20, label: "Venue postcode" }),
-    venue_country: pick(body.venue_country, CONFIG.countries, "venue_country", { label: "Venue country" }),
+    venue_country: CONFIG.country,
 
     // catering
     catering_services: cateringServices,
@@ -192,11 +191,7 @@ export function validateEnquiry(body) {
       ? wholeNumber(body.affected_guest_count, "affected_guest_count", { min: 0, label: "Guests affected" })
       : null,
 
-    // services + style
-    additional_services: additional,
-    additional_services_other: additional.includes("other")
-      ? text(body.additional_services_other, "additional_services_other", { required: true, max: L.mediumText, label: "Additional service description" })
-      : null,
+    // style
     event_style: many(body.event_style, CONFIG.eventStyles, "event_style", { label: "Event style" }),
     theme_colours: text(body.theme_colours, "theme_colours", { label: "Theme or colours" }),
 

@@ -60,6 +60,7 @@ async function route(request, env) {
     if ((m = rest.match(/^enquiries\/([0-9a-f-]{36})$/))) {
       if (method === "GET") return admin.getEnquiry(request, env, m[1]);
       if (method === "PATCH") return admin.patchEnquiry(request, env, m[1]);
+      if (method === "DELETE") return admin.deleteEnquiry(request, env, m[1]);
     }
     if ((m = rest.match(/^enquiries\/([0-9a-f-]{36})\/notes$/)) && method === "POST") {
       return admin.addNote(request, env, m[1]);

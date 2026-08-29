@@ -122,6 +122,10 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
 .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:end}
 .row>*{flex:1 1 120px}
 .saved{color:var(--ok);font-size:.8rem}
+.btn-danger{background:#fff;color:var(--bad);border-color:#F0C0BC}
+.btn-danger:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+.danger-zone{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line)}
+.danger-zone p{margin:0 0 .7rem;font-size:.78rem;color:var(--muted);line-height:1.45}
 
 @media(max-width:900px){
   .shell{grid-template-columns:1fr}
@@ -376,7 +380,7 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
         '<div class="card"><h3>Customer</h3><div class="body">' +
           kv([["Name", e.full_name],["Phone", e.phone],["Email", e.email],
               ["Preferred contact", label(CFG.preferredContact, e.preferred_contact)],
-              ["Address", [e.address_line, e.city, e.region, e.postcode, label(CFG.countries, e.country)].filter(Boolean).join(", ")],
+              ["Address", [e.address_line, e.city, e.region, e.postcode, CFG.countryLabel].filter(Boolean).join(", ")],
               ["Actions", contactActions, true]]) +
         '</div></div>' +
 
@@ -395,7 +399,7 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
               ["Guests", e.guest_count + (e.child_guest_count ? " (" + e.child_guest_count + " children)" : "")],
               ["Venue status", label(CFG.venueStatuses, e.venue_status)],
               ["Venue", e.venue_name],
-              ["Venue address", [e.venue_address, e.venue_city, e.venue_region, e.venue_postcode, label(CFG.countries, e.venue_country)].filter(Boolean).join(", ")]]) +
+              ["Venue address", [e.venue_address, e.venue_city, e.venue_region, e.venue_postcode].filter(Boolean).join(", ")]]) +
         '</div></div>' +
 
         '<div class="card"><h3>Catering</h3><div class="body">' +
@@ -407,10 +411,8 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
               ["Menu request", e.menu_description]]) +
         '</div></div>' +
 
-        '<div class="card"><h3>Additional services &amp; style</h3><div class="body">' +
-          kv([["Services", chips(labels(CFG.additionalServices, e.additional_services)), true],
-              ["Other service", e.additional_services_other],
-              ["Style", chips(labels(CFG.eventStyles, e.event_style)), true],
+        '<div class="card"><h3>Event style</h3><div class="body">' +
+          kv([["Style", chips(labels(CFG.eventStyles, e.event_style)), true],
               ["Theme / colours", e.theme_colours]]) +
         '</div></div>' +
 
@@ -446,6 +448,10 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
           '<div style="margin-top:.9rem"><button class="btn btn-primary btn-sm" id="d-save">Save changes</button> ' +
             '<button class="btn btn-sm" id="d-archive">' + (e.archived ? "Restore" : "Archive") + '</button> ' +
             '<span id="d-saved" class="saved"></span></div>' +
+          '<div class="danger-zone">' +
+            '<p>Archiving hides an enquiry but keeps it. Deleting removes it, its notes, its history and its files for good — use it when someone asks for their information to be erased.</p>' +
+            '<button class="btn btn-sm btn-danger" id="d-delete">Delete permanently</button>' +
+          '</div>' +
         '</div></div>' +
 
         '<div class="card"><h3>Quote</h3><div class="body">' +
@@ -537,6 +543,26 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
       }, "q-saved", "q-save");
     });
 
+    document.getElementById("d-delete").addEventListener("click", function(){
+      var typed = prompt(
+        "This permanently deletes enquiry " + e.reference + ", including its notes, " +
+        "history and any attached files. It cannot be undone.
+
+" +
+        "Type the reference to confirm:"
+      );
+      if(typed === null) return;                       // cancelled
+      var btn = document.getElementById("d-delete");
+      btn.disabled = true;
+      api("enquiries/" + id, { method:"DELETE", body:{ confirm: typed } })
+        .then(function(res){
+          alert("Enquiry " + res.reference + " deleted" +
+                (res.filesRemoved ? " along with " + res.filesRemoved + " file(s)." : "."));
+          location.hash = "#/enquiries";
+        })
+        .catch(function(err){ alert(err.message); btn.disabled = false; });
+    });
+
     document.getElementById("n-add").addEventListener("click", function(){
       var body = document.getElementById("n-body").value.trim();
       if(!body) return;
@@ -563,10 +589,11 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
       'Options switched off disappear from the form but keep displaying correctly on enquiries that already use them.</div>' +
       '<div style="height:1rem"></div>' +
       list("Catering services", CFG.cateringServices) +
-      list("Additional services", CFG.additionalServices) +
       list("Dietary requirements", CFG.dietaryRequirements) +
       list("Event types", CFG.eventTypes) +
       list("Budget ranges", CFG.budgets) +
+      '<div class="card"><h3>Currency</h3><div class="body">Quotes are recorded in ' +
+        esc(CFG.currency.options.join(", ")) + '.</div></div>' +
       list("Statuses", CFG.statuses) +
       '<div class="card"><h3>Signed in as</h3><div class="body">' + esc(USER.email) + '</div></div>');
   }

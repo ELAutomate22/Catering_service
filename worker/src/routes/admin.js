@@ -11,8 +11,7 @@ import { requireAdmin, signIn, signOut, sessionCookie, clearedCookie } from "../
 import { CONFIG, valuesOf } from "../lib/config.js";
 
 const JSON_COLUMNS = [
-  "catering_services", "meal_requirements", "dietary_requirements",
-  "additional_services", "event_style",
+  "catering_services", "meal_requirements", "dietary_requirements", "event_style",
 ];
 
 function hydrate(row) {
@@ -169,8 +168,12 @@ export async function getEnquiry(request, env, id) {
     env.DB.prepare("SELECT id, filename, content_type, size_bytes, created_at FROM enquiry_files WHERE enquiry_id = ?").bind(id).all(),
   ]);
 
-  // First open is itself worth recording, but only once.
-  if (row.status === "new") {
+  // Worth recording that it has been seen, but only the first time. Keying off
+  // status alone logged a new entry on every view while it stayed "new".
+  const seen = await env.DB.prepare(
+    "SELECT 1 FROM enquiry_activity WHERE enquiry_id = ? AND kind = 'opened' LIMIT 1"
+  ).bind(id).first();
+  if (!seen) {
     await logActivity(env, id, "opened", "Enquiry opened for the first time", user.email);
   }
 
@@ -323,6 +326,40 @@ export async function downloadFile(request, env, fileId) {
       "Content-Security-Policy": "default-src 'none'; img-src 'self'; object-src 'none'; sandbox",
     },
   });
+}
+
+/* --------------------------------------------------------------- delete ---- */
+/* Permanent, and deliberately separate from Archive. Archive is the everyday
+   action; this exists for a genuine erasure request, where leaving a hidden
+   copy behind would defeat the point. The caller must quote the reference, so
+   a stray click on the wrong row cannot destroy an enquiry. */
+export async function deleteEnquiry(request, env, id) {
+  const user = await requireAdmin(request, env);
+  const body = await readJson(request);
+
+  const row = await env.DB.prepare("SELECT id, reference FROM enquiries WHERE id = ?").bind(id).first();
+  if (!row) throw notFound("That enquiry no longer exists.");
+
+  if (String(body.confirm || "").trim().toUpperCase() !== row.reference.toUpperCase()) {
+    throw badRequest("Type the enquiry reference exactly to confirm deletion.");
+  }
+
+  // Attachments first: a row removed before its file leaves the file orphaned
+  // in the bucket with nothing left pointing at it.
+  const files = await env.DB.prepare("SELECT r2_key FROM enquiry_files WHERE enquiry_id = ?").bind(id).all();
+  for (const f of files.results || []) {
+    try {
+      await env.UPLOADS.delete(f.r2_key);
+    } catch (err) {
+      console.error("could not delete R2 object", f.r2_key, err);
+    }
+  }
+
+  // Notes, activity and file rows carry ON DELETE CASCADE, which D1 enforces.
+  await env.DB.prepare("DELETE FROM enquiries WHERE id = ?").bind(id).run();
+
+  console.log(`enquiry ${row.reference} permanently deleted by ${user.email}`);
+  return adminJson({ ok: true, reference: row.reference, filesRemoved: (files.results || []).length });
 }
 
 export { HttpError };

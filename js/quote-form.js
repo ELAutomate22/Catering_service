@@ -155,10 +155,7 @@
           textInput("city", "City", { maxlength: 120, autocomplete: "address-level2" }) +
           textInput("region", "County / region", { maxlength: 120, autocomplete: "address-level1" }) +
         '</div>' +
-        '<div class="qf-row">' +
-          textInput("postcode", "Postcode", { maxlength: 20, autocomplete: "postal-code" }) +
-          select("country", "Country", C.countries, { defaultValue: C.defaultCountry, blank: "Please choose…" }) +
-        '</div>';
+        textInput("postcode", "Postcode", { maxlength: 20, autocomplete: "postal-code" });
     }
 
     if (s === "event") {
@@ -186,10 +183,7 @@
           textInput("venue_city", "City", { maxlength: 120 }) +
           textInput("venue_region", "County / region", { maxlength: 120 }) +
         '</div>' +
-        '<div class="qf-row">' +
-          textInput("venue_postcode", "Postcode", { maxlength: 20 }) +
-          select("venue_country", "Country", C.countries, { defaultValue: C.defaultCountry }) +
-        '</div>';
+        textInput("venue_postcode", "Postcode", { maxlength: 20 });
     }
 
     if (s === "catering") {
@@ -221,10 +215,6 @@
       var u = C.uploads;
       return '<h2 class="qf-h">Additional details</h2>' +
         '<p class="qf-sub">The finishing touches. Everything here is optional.</p>' +
-        checkGroup("additional_services", "What else might you need from us?", C.additionalServices, { hint: "(choose any that apply)" }) +
-        '<div id="wrap-additional_services_other"' + ((data.additional_services || []).indexOf("other") > -1 ? "" : " hidden") + '>' +
-          textArea("additional_services_other", "Please describe", { rows: 2, maxlength: C.limits.mediumText }) +
-        '</div>' +
         checkGroup("event_style", "Tell us about the style of your event", C.eventStyles) +
         textInput("theme_colours", "Theme or colours", { maxlength: 200 }) +
         select("approximate_budget", "Approximate catering budget", C.budgets, { blank: "Please choose…" }) +
@@ -277,8 +267,8 @@
   }
 
   function renderReview() {
-    var addr = [data.address_line, data.city, data.region, data.postcode, labelOf(C.countries, data.country)].filter(Boolean).join(", ");
-    var venue = [data.venue_name, data.venue_address, data.venue_city, data.venue_region, data.venue_postcode, labelOf(C.countries, data.venue_country)].filter(Boolean).join(", ");
+    var addr = [data.address_line, data.city, data.region, data.postcode].filter(Boolean).join(", ");
+    var venue = [data.venue_name, data.venue_address, data.venue_city, data.venue_region, data.venue_postcode].filter(Boolean).join(", ");
     var dietary = labelsOf(C.dietaryRequirements, data.dietary_requirements).join(", ");
 
     return '<h2 class="qf-h">Review your enquiry</h2>' +
@@ -309,9 +299,7 @@
         ["Details", data.dietary_details],
         ["Guests affected", data.affected_guest_count]
       ]) +
-      block("Additional services", 3, [
-        ["Services", labelsOf(C.additionalServices, data.additional_services).join(", ")],
-        ["Other", data.additional_services_other],
+      block("Event style", 3, [
         ["Style", labelsOf(C.eventStyles, data.event_style).join(", ")],
         ["Theme / colours", data.theme_colours]
       ]) +
@@ -426,12 +414,6 @@
       }
     }
 
-    if (s === "extras") {
-      if ((data.additional_services || []).indexOf("other") > -1 && !(data.additional_services_other || "").trim()) {
-        fail("additional_services_other", "Please describe what you need.");
-      }
-    }
-
     if (s === "review") {
       if (!data.privacy_consent) fail("privacy_consent", "Please agree to this so we can reply to your enquiry.");
     }
@@ -483,7 +465,6 @@
       ["wrap-catering_services_other", (data.catering_services || []).indexOf("other") > -1],
       ["wrap-food_style_other", data.food_style === "other"],
       ["wrap-menu_description", data.existing_menu === "yes"],
-      ["wrap-additional_services_other", (data.additional_services || []).indexOf("other") > -1],
       ["wrap-dietary_details", (data.dietary_requirements || []).some(function (x) { return x !== "none"; })]
     ];
     pairs.forEach(function (p) {
@@ -517,7 +498,7 @@
       }
       data.dietary_requirements = [];
     }
-    if (e.target.name === "catering_services" || e.target.name === "additional_services" ||
+    if (e.target.name === "catering_services" ||
         e.target.name === "meal_requirements" || e.target.name === "event_style") {
       data[e.target.name] = [];
     }
