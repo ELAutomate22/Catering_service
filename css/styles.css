@@ -918,3 +918,17 @@ a.contact-card-value:hover { color: var(--gold); }
   color: rgba(246,239,226,.86);
   margin: 0 0 1.15rem;
 }
+
+/* ---- Request a Quote CTAs ------------------------------------------------ */
+/* In the desktop nav the quote link is a plain link like its neighbours; the
+   gold button beside it carries the emphasis. On mobile the header button is
+   hidden (space is tight) and this becomes the prominent item in the menu. */
+.nav-quote { color: var(--gold) !important; font-weight: 600; }
+@media (min-width: 981px) { .nav-quote { display: none; } }
+@media (max-width: 980px) {
+  .header-quote { display: none; }
+  .nav-quote {
+    margin-top: .6rem; padding-top: 1rem;
+    border-top: 1px solid rgba(246,239,226,.18);
+  }
+}

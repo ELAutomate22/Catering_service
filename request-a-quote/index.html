@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Request a Quote — Yeshua Royal Catering Services</title>
+  <meta name="description" content="Tell us about your occasion and we will prepare a catering proposal tailored to your event." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/quote.css" />
+  <link rel="icon" href="../assets/logo/logo.png" />
+</head>
+<body class="quote-page">
+
+  <!-- Trimmed header: on this page the job is to finish the form, so the only
+       ways out are back to the site or a phone call. -->
+  <header class="quote-header">
+    <div class="container quote-header-inner">
+      <a class="quote-brand" href="../index.html">
+        <img src="../assets/logo/logo.png" alt="Yeshua Royal Catering Services" class="brand-logo"
+             onerror="this.onerror=null;this.src='../assets/logo/logo.svg'" />
+        <span class="brand-name" data-text="brand.name">Yeshua Royal Catering Services</span>
+      </a>
+      <a class="btn btn-outline btn-sm" data-href-tel>Call Us</a>
+    </div>
+  </header>
+
+  <main class="quote-main">
+    <div class="container quote-container">
+
+      <header class="quote-intro">
+        <p class="eyebrow">Request a Quote</p>
+        <h1 class="quote-title">Tell Us About Your Occasion</h1>
+        <p class="quote-lead">Share a few details about your event and we’ll prepare a catering
+          proposal tailored to you.</p>
+      </header>
+
+      <!-- Progress. Rendered by js/quote-form.js so the step list has one
+           definition rather than two that can drift. -->
+      <nav class="quote-progress" aria-label="Form progress">
+        <ol id="quoteSteps"></ol>
+      </nav>
+
+      <div id="quoteLoading" class="quote-loading">
+        <p>Preparing the form…</p>
+      </div>
+
+      <div id="quoteUnavailable" class="quote-unavailable" hidden>
+        <h2>We can’t load the form right now</h2>
+        <p>Please call us instead and we’ll take your details over the phone.</p>
+        <a class="btn btn-gold btn-lg" data-href-tel>Call Us</a>
+      </div>
+
+      <form id="quoteForm" novalidate hidden>
+        <div id="quoteSections"></div>
+
+        <p class="quote-error" id="quoteError" role="alert" hidden></p>
+
+        <div class="quote-nav">
+          <button type="button" class="btn btn-ghost" id="quoteBack" hidden>Back</button>
+          <button type="button" class="btn btn-gold btn-lg" id="quoteNext">Continue</button>
+          <button type="submit" class="btn btn-gold btn-lg" id="quoteSubmit" hidden>Send My Catering Enquiry</button>
+        </div>
+        <p class="quote-autosave" id="quoteAutosave" hidden>Your answers are kept on this device as you type.</p>
+      </form>
+
+      <!-- Replaces the form once the enquiry is accepted. -->
+      <section id="quoteDone" class="quote-done" hidden></section>
+
+    </div>
+  </main>
+
+  <footer class="quote-footer">
+    <div class="container">
+      <p><span data-text="brand.name">Yeshua Royal Catering Services</span> · <span data-text="contact.serviceArea">Available for events across the UK</span></p>
+      <p><a href="../index.html">Return to the website</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/quote-form.js"></script>
+</body>
+</html>

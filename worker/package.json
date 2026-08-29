@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "db:init": "wrangler d1 execute yeshua-reviews --remote --file=./schema.sql",
-    "db:init:local": "wrangler d1 execute yeshua-reviews --local --file=./schema.sql"
+    "db:migrate": "wrangler d1 migrations apply yeshua-reviews --remote",
+    "db:migrate:local": "wrangler d1 migrations apply yeshua-reviews --local",
+    "admin:password": "node scripts/set-admin-password.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.124.0"

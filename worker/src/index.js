@@ -1,149 +1,118 @@
 /* =============================================================================
-   REVIEWS API — Cloudflare Worker backed by D1
+   YESHUA ROYAL CATERING — Worker entry point
    -----------------------------------------------------------------------------
-   Replaces the old Supabase/PostgREST endpoint. D1 has no row-level security,
-   so this Worker *is* the security boundary: it is the only thing that talks to
-   the database, and it decides what may be read and written.
+   Three surfaces on one Worker:
 
-     GET  /api/reviews   → approved reviews, newest first
-     POST /api/reviews   → { name, role?, rating, quote } → the created review
+     /api/reviews          public, CORS, called by the Netlify site
+     /api/quote/*          public, CORS, called by the Netlify site
+     /admin, /api/admin/*  private, same-origin, session-cookie protected
 
-   Everything else 404s. There is deliberately no update or delete route — a
-   review is hidden or removed by the owner from the D1 console, never over HTTP.
+   The admin app is served from here rather than from the website because the
+   two live on different registrable domains. A session cookie set by this
+   Worker would be a third-party cookie to the Netlify site — blocked outright
+   by Safari and being phased out in Chrome. Serving the admin UI from the same
+   origin as its API makes an HttpOnly + SameSite=Strict cookie work properly
+   everywhere, and keeps the admin surface off the public marketing site.
    ========================================================================== */
 
-const MAX_LIST = 100;
+import { json, adminJson, corsHeaders, HttpError, notFound } from "./lib/http.js";
+import { listReviews, createReview } from "./routes/reviews.js";
+import { getQuoteConfig, createEnquiry } from "./routes/enquiries.js";
+import * as admin from "./routes/admin.js";
+import { adminPage } from "./admin-app.js";
 
-/* Flood control, per hashed IP. */
-const MIN_SECONDS_BETWEEN_POSTS = 60;
-const MAX_POSTS_PER_DAY = 3;
+const isAdminPath = (p) => p === "/admin" || p.startsWith("/admin/") || p.startsWith("/api/admin/");
 
-/* ------------------------------------------------------------------- CORS */
-/* ALLOWED_ORIGINS is a comma-separated list in wrangler.jsonc. "*" lets any
-   site post, which is only appropriate before the real domain is known. */
-function corsHeaders(request, env) {
-  const allowed = String(env.ALLOWED_ORIGINS || "*")
-    .split(",").map((s) => s.trim()).filter(Boolean);
-  const origin = request.headers.get("Origin") || "";
-  const open = allowed.includes("*");
-  const ok = open || allowed.includes(origin);
+async function route(request, env) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/+$/, "") || "/";
+  const method = request.method;
 
-  return {
-    "Access-Control-Allow-Origin": ok ? (open && !origin ? "*" : origin || "*") : "null",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-    Vary: "Origin",
-  };
-}
-
-function json(body, status, request, env) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-      ...corsHeaders(request, env),
-    },
-  });
-}
-
-/* --------------------------------------------------------------- utilities */
-/* Salted so the stored digest is useless to anyone who gets the database:
-   without IP_SALT you cannot test a guessed address against it. */
-async function hashIp(ip, salt) {
-  const data = new TextEncoder().encode(String(salt || "") + "|" + String(ip || ""));
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-/* Mirrors the CHECK constraints in schema.sql, so the caller gets a useful
-   message instead of a raw database error. */
-function validate(body) {
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const role = typeof body.role === "string" ? body.role.trim() : "";
-  const quote = typeof body.quote === "string" ? body.quote.trim() : "";
-  const rating = Number(body.rating);
-
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) return { error: "Please choose a star rating." };
-  if (name.length < 2 || name.length > 60) return { error: "Please enter your name." };
-  if (role.length > 60) return { error: "That occasion is too long." };
-  if (quote.length < 10 || quote.length > 600) return { error: "Please tell us a little more (at least 10 characters)." };
-
-  return { row: { name, role: role || null, rating, quote } };
-}
-
-/* ------------------------------------------------------------------ routes */
-async function listReviews(request, env) {
-  const { results } = await env.DB.prepare(
-    `SELECT name, role, rating, quote, created_at
-       FROM catering_reviews
-      WHERE approved = 1
-      ORDER BY created_at DESC
-      LIMIT ?`
-  ).bind(MAX_LIST).all();
-
-  return json(results || [], 200, request, env);
-}
-
-async function createReview(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: "Expected a JSON body." }, 400, request, env);
+  /* ---------------------------------------------------------- admin app --- */
+  if (path === "/admin") {
+    return new Response(adminPage(), {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        // The admin app is entirely self-contained: no third-party scripts,
+        // no external requests, nothing to inject a payload through.
+        "Content-Security-Policy":
+          "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; " +
+          "img-src 'self' data:; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
   }
 
-  const { error, row } = validate(body || {});
-  if (error) return json({ error }, 400, request, env);
+  /* --------------------------------------------------------- admin API ---- */
+  if (path.startsWith("/api/admin/")) {
+    const rest = path.slice("/api/admin/".length);
 
-  const ipHash = await hashIp(request.headers.get("CF-Connecting-IP") || "unknown", env.IP_SALT);
-  const now = Date.now();
+    if (rest === "login" && method === "POST") return admin.postLogin(request, env);
+    if (rest === "logout" && method === "POST") return admin.postLogout(request, env);
+    if (rest === "me" && method === "GET") return admin.getMe(request, env);
+    if (rest === "dashboard" && method === "GET") return admin.getDashboard(request, env);
+    if (rest === "enquiries" && method === "GET") return admin.listEnquiries(request, env);
 
-  const recent = await env.DB.prepare(
-    `SELECT created_at FROM catering_reviews
-      WHERE ip_hash = ? AND created_at > ?
-      ORDER BY created_at DESC`
-  ).bind(ipHash, new Date(now - 24 * 60 * 60 * 1000).toISOString()).all();
-
-  const posts = recent.results || [];
-  if (posts.length >= MAX_POSTS_PER_DAY) {
-    return json({ error: "You have already left a review recently. Thank you!" }, 429, request, env);
+    let m;
+    if ((m = rest.match(/^enquiries\/([0-9a-f-]{36})$/))) {
+      if (method === "GET") return admin.getEnquiry(request, env, m[1]);
+      if (method === "PATCH") return admin.patchEnquiry(request, env, m[1]);
+    }
+    if ((m = rest.match(/^enquiries\/([0-9a-f-]{36})\/notes$/)) && method === "POST") {
+      return admin.addNote(request, env, m[1]);
+    }
+    if ((m = rest.match(/^files\/([0-9a-f-]{36})$/)) && method === "GET") {
+      return admin.downloadFile(request, env, m[1]);
+    }
+    throw notFound();
   }
-  if (posts.length && now - Date.parse(posts[0].created_at) < MIN_SECONDS_BETWEEN_POSTS * 1000) {
-    return json({ error: "Please wait a moment before posting again." }, 429, request, env);
+
+  /* ------------------------------------------------------------- public --- */
+  if (path === "/api/reviews") {
+    if (method === "GET") return listReviews(request, env);
+    if (method === "POST") return createReview(request, env);
+    throw new HttpError(405, "Method not allowed");
   }
 
-  const created_at = new Date(now).toISOString();
-  await env.DB.prepare(
-    `INSERT INTO catering_reviews (id, created_at, name, role, rating, quote, approved, ip_hash)
-     VALUES (?, ?, ?, ?, ?, ?, 1, ?)`
-  ).bind(crypto.randomUUID(), created_at, row.name, row.role, row.rating, row.quote, ipHash).run();
+  if (path === "/api/quote/config" && method === "GET") return getQuoteConfig(request, env);
 
-  // Only the public fields go back — never approved or ip_hash.
-  return json({ ...row, created_at }, 201, request, env);
+  if (path === "/api/quote/enquiries") {
+    if (method === "POST") return createEnquiry(request, env);
+    throw new HttpError(405, "Method not allowed");
+  }
+
+  throw notFound();
 }
 
-/* -------------------------------------------------------------------- entry */
 export default {
   async fetch(request, env) {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+    const path = url.pathname;
 
+    // Preflight only matters for the public, cross-origin surface.
     if (request.method === "OPTIONS") {
+      if (isAdminPath(path)) return new Response(null, { status: 204 });
       return new Response(null, { status: 204, headers: corsHeaders(request, env) });
-    }
-    if (pathname !== "/api/reviews") {
-      return json({ error: "Not found" }, 404, request, env);
     }
 
     try {
-      if (request.method === "GET") return await listReviews(request, env);
-      if (request.method === "POST") return await createReview(request, env);
+      return await route(request, env);
     } catch (err) {
-      console.error("reviews api failed", err);
-      return json({ error: "Something went wrong. Please try again." }, 500, request, env);
-    }
+      const status = err instanceof HttpError ? err.status : 500;
+      // Anything unexpected is logged for us and reduced to a neutral message
+      // for the caller — no stack traces, no SQL, no internals.
+      if (status === 500) console.error("worker error", path, err);
+      const body = {
+        error: status === 500 ? "Something went wrong. Please try again." : err.message,
+      };
+      if (err.field) body.field = err.field;
 
-    return json({ error: "Method not allowed" }, 405, request, env);
+      return isAdminPath(path)
+        ? adminJson(body, status)
+        : json(body, status, request, env);
+    }
   },
 };

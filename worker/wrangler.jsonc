@@ -5,20 +5,36 @@
   "compatibility_date": "2026-08-20",
   "observability": { "enabled": true },
 
+  // Each deployment otherwise also gets its own public hostname serving this
+  // same API and the admin app. One address is enough.
+  "preview_urls": false,
+
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "yeshua-reviews",
-      "database_id": "a35dece6-6072-411b-88a4-5d63b8844686"
+      "database_id": "a35dece6-6072-411b-88a4-5d63b8844686",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // Private bucket for enquiry attachments. It has no public URL; files are
+  // streamed only through the authenticated /api/admin/files/:id route.
+  "r2_buckets": [
+    {
+      "binding": "UPLOADS",
+      "bucket_name": "yeshua-enquiry-uploads"
     }
   ],
 
   "vars": {
-    // Only these origins may read or post reviews. Add your custom domain
-    // here too if you move off netlify.app, comma-separated.
+    // Origins allowed to call the PUBLIC endpoints (reviews, quote form).
+    // The admin API is same-origin and never uses this.
     "ALLOWED_ORIGINS": "https://yeshua-royal-catering.netlify.app"
   }
 
-  // IP_SALT is a secret, not a var:
-  //   npx wrangler secret put IP_SALT
+  // Secrets (never in this file):
+  //   npx wrangler secret put IP_SALT        - salts the flood-control hashes
+  // Admin passwords are set with:
+  //   npm run admin:password
 }
