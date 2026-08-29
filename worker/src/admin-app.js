@@ -544,11 +544,10 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
     });
 
     document.getElementById("d-delete").addEventListener("click", function(){
+      var BREAK = String.fromCharCode(10) + String.fromCharCode(10);
       var typed = prompt(
         "This permanently deletes enquiry " + e.reference + ", including its notes, " +
-        "history and any attached files. It cannot be undone.
-
-" +
+        "history and any attached files. It cannot be undone." + BREAK +
         "Type the reference to confirm:"
       );
       if(typed === null) return;                       // cancelled
