@@ -27,6 +27,7 @@ window.SITE_CONFIG = {
     // primary phone (single-button spots: hero + header "Call Us")
     phoneDisplay: "+44 7773 556005",
     phoneHref: "+447773556005",
+    email: "samudzichristina@gmail.com",
     instagramUrl: "https://www.instagram.com/yeshua.royal.catering/",
     instagramHandle: "@yeshua.royal.catering",
     location: "United Kingdom",                 // ← confirm / adjust your city

@@ -838,87 +838,6 @@ a.contact-card-value:hover { color: var(--gold); }
   .hero-plate, .chip, .float-card, .plate-rotor { transform: none !important; }
 }
 
-/* =============================================================================
-   PHOTO LETTER SCATTER
-   Hover treatment for real photography (figure.media). Letters render in a
-   fixed overlay on <body> so no card, tile or grid can clip them; see
-   js/photo-letter-scatter.js for why.
-   ========================================================================== */
-
-/* Letter colour follows the section it is hovering over. */
-:root { --ls-color: var(--ink);  --ls-halo: rgba(251,247,240,.55); }
-.hero  { --ls-color: #F6EFE2;    --ls-halo: rgba(20,12,36,.6); }
-.insta { --ls-color: #F6EFE2;    --ls-halo: rgba(20,12,36,.6); }
-
-/* The frame is the part that shrinks. It takes over clipping the zoomed image
-   so the figure's own transform stays free for main.js's parallax. */
-.ls-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: inherit;
-  transform-origin: center;
-}
-
-/* GSAP owns the zoom on enhanced photos, so the CSS transition would only
-   fight it. Untouched on touch/reduced-motion, where CSS still does the work.
-   No will-change here on purpose: 30 permanently promoted layers costs more
-   than it saves, and GSAP promotes each image for the duration of its tween. */
-.ls-photo.ls-live .ls-frame img { transition: none; }
-
-.ls-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 300;          /* above cards + header, below the lightbox (320) */
-  overflow: visible;
-  pointer-events: none;
-  visibility: hidden;
-}
-.ls-overlay.is-on { visibility: visible; }
-
-.ls-cloud { position: absolute; top: 0; left: 0; }
-
-.ls-char {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--ls-color);
-  font-family: var(--sans);
-  font-size: clamp(.72rem, 1.05vw, 1rem);
-  font-weight: 500;
-  line-height: 1;
-  white-space: pre;
-  text-shadow: 0 1px 0 var(--ls-halo);
-  will-change: transform, opacity;
-}
-
-/* Decorative only: no letters on touch, and nothing moves under reduced
-   motion. Both fall back to the site's existing CSS hover zoom. */
-@media (hover: none), (pointer: coarse) {
-  .ls-overlay { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ls-overlay { display: none !important; }
-  .ls-frame { transform: none !important; }
-}
-
-/* ---- Cakes cross-link (sister site), under the Instagram button ---------- */
-.insta-cakes {
-  margin-top: 2.6rem;
-  padding-top: 2.1rem;
-  border-top: 1px solid rgba(246,239,226,.14);
-}
-.insta-cakes[hidden] { display: none; }
-.insta-cakes-msg {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  color: rgba(246,239,226,.86);
-  margin: 0 0 1.15rem;
-}
-
 /* ---- Request a Quote CTAs ------------------------------------------------ */
 /* In the desktop nav the quote link is a plain link like its neighbours; the
    gold button beside it carries the emphasis. On mobile the header button is
@@ -931,4 +850,9 @@ a.contact-card-value:hover { color: var(--gold); }
     margin-top: .6rem; padding-top: 1rem;
     border-top: 1px solid rgba(246,239,226,.18);
   }
+}
+
+.menu-speciality {
+  margin-top: 1rem; font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem); color: var(--gold);
 }

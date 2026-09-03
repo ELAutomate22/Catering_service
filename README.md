@@ -4,9 +4,7 @@
 
 A premium, cinematic catering website with a 3D scroll landing experience. The
 site itself is plain HTML, CSS and JavaScript — **no build step, no npm**. Just
-open `index.html` (or upload the folder to any host) and it works. GSAP is
-vendored as a plain file in `js/vendor/`, so there is still nothing to install
-or compile.
+open `index.html` (or upload the folder to any host) and it works.
 
 The one moving part is the **star reviews** section, which stores visitor
 reviews in a Cloudflare D1 database via the Worker in `worker/`. Until that
@@ -94,28 +92,13 @@ catering services website/
 │   ├── config.js        # ← EDIT THIS (brand, phone, Instagram, content)
 │   ├── main.js          # binding, rendering, 3D scroll engine, lightbox
 │   ├── reviews.js       # star reviews: modal, average, talks to the Worker
-│   ├── photo-letter-scatter.js  # hover letter-scatter on every photo
-│   └── vendor/gsap.min.js       # GSAP 3.13.0, vendored (no build step)
+│   └── quote-form.js    # request-a-quote multi-step form
 ├── worker/              # reviews API — Cloudflare Worker + D1 (see its README)
 ├── assets/
 │   ├── logo/logo.svg    # ← replace with your logo
 │   └── images/          # ← drop your photos here (see README.txt inside)
 └── README.md
 ```
-
-## ✨ Photo hover effect
-
-Hovering any real photo scatters its caption into single characters around the
-image while the photo zooms inside a slightly shrinking frame. It is wired to
-`figure.media`, the markup the site already uses for photography and never for
-logos or icons, so new photos get it automatically.
-
-- Caption source, in order: `data-scatter-text`, then `data-label`, then `alt`.
-- Opt a photo out with `data-no-letter-scatter`.
-- Tuning constants (spread, zoom, durations, stagger) sit at the top of
-  `js/photo-letter-scatter.js`.
-- Skipped entirely on touch screens and for visitors who prefer reduced motion;
-  both fall back to the site's original CSS hover zoom.
 
 ## 🎨 Re-theming (colours & fonts)
 

@@ -139,6 +139,7 @@
         <p class="eyebrow reveal">The Food</p>
         <h2 class="section-title reveal">A taste of what we create</h2>
         <p class="section-lead reveal">Menus are seasonal and made to measure. Explore a selection of the categories we cater — then see it all come to life on Instagram.</p>
+        <p class="menu-speciality reveal">Authentic South African dishes specialising in Zimbabwean Traditional dishes.</p>
       </header>
       <div class="menu-grid" id="menuGrid"></div>
       <div class="menu-cta reveal">
@@ -272,6 +273,10 @@
       <ul class="contact-cards" id="contactCards">
         <!-- phone cards (one per number) are rendered here by main.js -->
         <li class="contact-card reveal">
+          <span class="contact-card-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div><p class="contact-card-label">Email</p><a class="contact-card-value" data-href-email data-text="contact.email">email</a></div>
+        </li>
+        <li class="contact-card reveal">
           <span class="contact-card-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
           <div><p class="contact-card-label">Instagram</p><a class="contact-card-value" data-href-ig data-text="contact.instagramHandle">@your.catering</a></div>
         </li>
@@ -366,13 +371,10 @@
     <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
   </div>
 
-  <script src="js/vendor/gsap.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   <script src="js/reviews.js"></script>
   <script src="js/service-ripple.js"></script>
   <script src="js/burger-cursor-trail.js"></script>
-  <!-- after main.js so the menu/events/gallery photos it renders are present -->
-  <script src="js/photo-letter-scatter.js"></script>
 </body>
 </html>

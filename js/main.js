@@ -76,6 +76,12 @@
       }
     }
 
+    // mailto links
+    var mail = get(CFG, "contact.email") || "";
+    $all("[data-href-email]").forEach(function (node) {
+      if (mail) node.setAttribute("href", "mailto:" + mail);
+    });
+
     var y = $("#year"); if (y) y.textContent = new Date().getFullYear();
     document.title = (get(CFG, "brand.name") || "SAVORÉ") + " — " + (get(CFG, "brand.tagline") || "Fine Catering");
   }

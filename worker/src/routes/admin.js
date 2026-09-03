@@ -6,7 +6,7 @@
    buttons is not a control; requireAdmin() is.
    ========================================================================== */
 
-import { adminJson, HttpError, badRequest, notFound, readJson, nowIso } from "../lib/http.js";
+import { adminJson, HttpError, badRequest, notFound, readJson, nowIso, submitterHash } from "../lib/http.js";
 import { requireAdmin, signIn, signOut, sessionCookie, clearedCookie } from "../lib/auth.js";
 import { CONFIG, valuesOf } from "../lib/config.js";
 
@@ -37,7 +37,8 @@ const touch = (env, id) =>
 /* -------------------------------------------------------------- session ---- */
 export async function postLogin(request, env) {
   const body = await readJson(request);
-  const { token, maxAge, user } = await signIn(env, body.email, body.password);
+  const ipHash = await submitterHash(request, env.IP_SALT);
+  const { token, maxAge, user } = await signIn(env, body.password, ipHash);
   return adminJson({ ok: true, user }, 200, { "Set-Cookie": sessionCookie(token, maxAge) });
 }
 

@@ -114,16 +114,14 @@ const sqlQuote = (s) => "'" + String(s).replace(/'/g, "''") + "'";
 const main = async () => {
   const local = process.argv.includes("--local");
 
-  console.log(NL + "Yeshua Royal Catering — admin account setup");
+  console.log(NL + "Yeshua Royal Catering — set the admin password");
   console.log(local ? "Target: LOCAL development database" + NL : "Target: REMOTE (live) database" + NL);
 
-  const email = (await read("Admin email: ")).trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    console.error("That does not look like an email address.");
-    process.exit(1);
-  }
+  // Sign-in is password-only, so there is one owner account and no email to
+  // ask for. OWNER is a fixed internal label, never typed and never shown.
+  const email = "owner";
 
-  const password = await read("Password (min 12 characters, hidden as you type): ", { hidden: true });
+  const password = await read("New password (min 12 characters, hidden as you type): ", { hidden: true });
   if (password.length < 12) {
     console.error("Too short — use at least 12 characters. Nothing was changed.");
     process.exit(1);
@@ -139,15 +137,16 @@ const main = async () => {
   const hash = await derive(password, salt, ITERATIONS, 32, "sha256");
   const now = new Date().toISOString();
 
-  // Upsert, so re-running simply changes the password for that email.
+  // One owner account only. Any earlier account is removed first, so an old
+  // password from a previous setup cannot still open the dashboard. Sessions
+  // and the failed-attempt lock go with it.
   const sql =
+    "DELETE FROM admin_users;" +
+    "DELETE FROM login_attempts;" +
     "INSERT INTO admin_users (id, email, password_hash, password_salt, iterations, created_at) " +
     "VALUES (" + sqlQuote(crypto.randomUUID()) + ", " + sqlQuote(email) + ", " +
     sqlQuote(hash.toString("hex")) + ", " + sqlQuote(salt.toString("hex")) + ", " +
-    ITERATIONS + ", " + sqlQuote(now) + ") " +
-    "ON CONFLICT(email) DO UPDATE SET " +
-    "password_hash = excluded.password_hash, password_salt = excluded.password_salt, " +
-    "iterations = excluded.iterations;";
+    ITERATIONS + ", " + sqlQuote(now) + ");";
 
   console.log("Saving…");
 
@@ -179,7 +178,7 @@ const main = async () => {
     process.exit((run && run.status) || 1);
   }
 
-  console.log(NL + "Done. " + email + " can now sign in.");
+  console.log(NL + "Done. The new password is now the only way in.");
   console.log("Sessions last 12 hours. Run this again at any time to change the password." + NL);
 };
 

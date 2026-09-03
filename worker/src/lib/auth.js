@@ -80,21 +80,64 @@ export function sessionCookie(token, maxAgeSeconds) {
 
 export const clearedCookie = () => sessionCookie("", 0);
 
-/* ------------------------------------------------------------------ signin */
-export async function signIn(env, email, password) {
-  const row = await env.DB.prepare(
-    "SELECT id, email, password_hash, password_salt, iterations FROM admin_users WHERE email = ?"
-  ).bind(String(email || "").trim().toLowerCase()).first();
+/* ------------------------------------------------------- failed-login lock */
+/* Password-only sign-in has no username to guess alongside it, so every
+   attempt is a whole guess at the secret. Without this an attacker can grind
+   the password as fast as the network allows. */
+const MAX_FAILS = 8;
+const LOCK_MINUTES = 15;
 
-  // Always run a derivation, even when the account does not exist, so the
-  // response time does not reveal whether an email is registered.
+async function assertNotLocked(env, ipHash) {
+  const row = await env.DB.prepare(
+    "SELECT fails, locked_until FROM login_attempts WHERE ip_hash = ?"
+  ).bind(ipHash).first();
+
+  if (row && row.locked_until && Date.parse(row.locked_until) > Date.now()) {
+    const mins = Math.ceil((Date.parse(row.locked_until) - Date.now()) / 60000);
+    throw new HttpError(429, `Too many attempts. Try again in ${mins} minute(s).`);
+  }
+  return row;
+}
+
+async function recordFailure(env, ipHash, row) {
+  const fails = (row ? row.fails : 0) + 1;
+  const now = new Date();
+  const lockedUntil = fails >= MAX_FAILS
+    ? new Date(now.getTime() + LOCK_MINUTES * 60000).toISOString()
+    : null;
+
+  await env.DB.prepare(
+    `INSERT INTO login_attempts (ip_hash, fails, last_fail_at, locked_until)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(ip_hash) DO UPDATE SET
+       fails = excluded.fails, last_fail_at = excluded.last_fail_at,
+       locked_until = excluded.locked_until`
+  ).bind(ipHash, fails, now.toISOString(), lockedUntil).run();
+}
+
+/* ------------------------------------------------------------------ signin */
+/* Password only — there is one owner account, so an email field would just be
+   a second thing to type that guards nothing. */
+export async function signIn(env, password, ipHash) {
+  const locked = await assertNotLocked(env, ipHash);
+
+  const row = await env.DB.prepare(
+    "SELECT id, email, password_hash, password_salt, iterations FROM admin_users ORDER BY created_at LIMIT 1"
+  ).first();
+
+  // Derive even when no account exists, so response time says nothing about
+  // whether the site has been set up yet.
   const salt = row ? row.password_salt : "00".repeat(16);
   const iterations = row ? row.iterations : PBKDF2_ITERATIONS;
   const attempt = await pbkdf2Hex(String(password || ""), salt, iterations);
 
   if (!row || !timingSafeEqual(attempt, row.password_hash)) {
-    throw new HttpError(401, "Those details are not correct.");
+    await recordFailure(env, ipHash, locked);
+    throw new HttpError(401, "That password is not correct.");
   }
+
+  // Clean slate on success, so an honest typo never counts towards a lock.
+  await env.DB.prepare("DELETE FROM login_attempts WHERE ip_hash = ?").bind(ipHash).run();
 
   const token = toHex(crypto.getRandomValues(new Uint8Array(32)));
   const tokenHash = await sha256Hex(token);

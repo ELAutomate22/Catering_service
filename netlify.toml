@@ -9,3 +9,28 @@
   to = "/index.html"
   status = 404
   force = true
+
+# Admin dashboard, proxied to the Worker (status 200 = rewrite, not a visible
+# redirect). This keeps the admin app and its API on the site's own origin, so
+# the session cookie is first-party and SameSite=Strict works in every browser.
+# The Worker still authorises every request; this only changes the address.
+#
+# The public quote form and reviews are NOT proxied — they call the Worker
+# directly, so it still sees each visitor's own IP for flood control.
+[[redirects]]
+  from = "/admin"
+  to = "https://yeshua-reviews-api.yeshuaroyalcatering.workers.dev/admin"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://yeshua-reviews-api.yeshuaroyalcatering.workers.dev/admin"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/*"
+  to = "https://yeshua-reviews-api.yeshuaroyalcatering.workers.dev/api/admin/:splat"
+  status = 200
+  force = true

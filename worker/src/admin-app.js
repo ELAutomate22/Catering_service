@@ -217,8 +217,7 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
         '<h1>Yeshua Royal Catering</h1><p class="sub">Admin</p>' +
         (message ? '<div class="alert">' + esc(message) + '</div>' : '') +
         '<div id="le"></div>' +
-        '<div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>' +
-        '<div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>' +
+        '<div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" autofocus required></div>' +
         '<button class="btn btn-primary" style="width:100%" id="lb">Sign In</button>' +
       '</form></div>';
 
@@ -226,7 +225,7 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
       e.preventDefault();
       var btn = document.getElementById("lb");
       btn.disabled = true; btn.textContent = "Signing in\\u2026";
-      api("login", { method:"POST", body:{ email:document.getElementById("em").value, password:document.getElementById("pw").value } })
+      api("login", { method:"POST", body:{ password:document.getElementById("pw").value } })
         .then(function(){ return boot(); })
         .catch(function(err){
           document.getElementById("le").innerHTML = '<div class="alert">' + esc(err.message) + '</div>';
@@ -246,7 +245,7 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
         '<div><div class="brand">Yeshua Royal</div><div class="brandsub">Admin</div></div>' +
         links + '<div class="spacer"></div>' +
         '<a href="#" id="out">Log out</a>' +
-        '<div class="who">' + esc(USER ? USER.email : "") + '</div>' +
+        '<div class="who">Signed in</div>' +
       '</nav><main class="main">' + inner + '</main></div>';
 
     document.getElementById("out").addEventListener("click", function(e){
@@ -594,7 +593,9 @@ tbody tr:hover{background:#FAF8FC;cursor:pointer}
       '<div class="card"><h3>Currency</h3><div class="body">Quotes are recorded in ' +
         esc(CFG.currency.options.join(", ")) + '.</div></div>' +
       list("Statuses", CFG.statuses) +
-      '<div class="card"><h3>Signed in as</h3><div class="body">' + esc(USER.email) + '</div></div>');
+      '<div class="card"><h3>Sign-in</h3><div class="body">Password only. Change it with ' +
+        '<strong>npm run admin:password</strong> in the worker folder. ' +
+        'Eight wrong attempts locks sign-in for 15 minutes.</div></div>');
   }
 
   function showError(err){
